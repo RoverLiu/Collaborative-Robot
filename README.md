@@ -16,6 +16,10 @@ catkin_make
 # clone our repository
 cd src
 
+mkdir summer_research
+
+cd summer_research
+
 git clone https://github.com/RoverLiu/Collaborative-Robot.git
 
 
