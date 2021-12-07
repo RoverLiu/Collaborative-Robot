@@ -19,6 +19,10 @@ https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linu
 after intallation, Run realsense-viewer
 ## realsence-ros package
 https://github.com/IntelRealSense/realsense-ros
+## Run RGBD camera 
+realsense-viewer
+On Rivz: roslaunch realsense2_camera rs_rgbd.launch 
+
 # clone our repository
 cd src
 
