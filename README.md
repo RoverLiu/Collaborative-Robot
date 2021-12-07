@@ -12,6 +12,8 @@ cd collabrative_robot_ws
 catkin_make
 
 # Package from others
+## voice package
+https://github.com/UTNuclearRoboticsPublic/pocketsphinx/tree/melodic-devel
 
 # clone our repository
 cd src
