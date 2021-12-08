@@ -35,6 +35,19 @@ On Rivz: roslaunch realsense2_camera rs_rgbd.launch
 ## Color based 2D Localization:
 https://github.com/dovanhuong/object_detection_2d
 
+## Robot arm control
+### install industrial_core
+https://github.com/ros-industrial/industrial_core
+
+### get urdf file for yumi
+https://github.com/OrebroUniversity/yumi.git
+
+### move it
+sudo apt install ros-melodic-moveit
+
+### create a robot arm with moveit
+https://www.youtube.com/watch?v=l4dtSRvlAjg
+
 # clone our repository
 cd src
 
