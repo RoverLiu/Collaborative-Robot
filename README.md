@@ -22,7 +22,8 @@ https://github.com/IntelRealSense/realsense-ros
 ## Run RGBD camera 
 realsense-viewer
 On Rivz: roslaunch realsense2_camera rs_rgbd.launch 
-
+## Object 3D estimation 
+1. install package 2d image detection: sudo apt-get install ros-melodic-find-object-2d
 # clone our repository
 cd src
 
