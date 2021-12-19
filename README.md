@@ -43,7 +43,7 @@ https://github.com/ros-industrial/industrial_core
 https://github.com/OrebroUniversity/yumi.git
 
 ### Yumi Control File (ros-kinetic, 16.04)
-https://github.com/kth-ros-pkg/ridgeback_yumi.git
+https://github.com/kth-ros-pkg/yumi
 
 ### move it
 sudo apt install ros-melodic-moveit
