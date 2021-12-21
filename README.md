@@ -40,6 +40,9 @@ https://github.com/dovanhuong/object_detection_2d
 ### install industrial_core
 https://github.com/ros-industrial/industrial_core
 
+### install hector-xacro-tools
+sudo apt install ros-kinetic-hector-xacro-tools
+
 ### get urdf file for yumi
 https://github.com/OrebroUniversity/yumi.git
 
