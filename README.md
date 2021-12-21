@@ -23,6 +23,9 @@ after intallation, Run realsense-viewer
 ## realsence-ros package
 https://github.com/IntelRealSense/realsense-ros
 
+## ddynamic_reconfigure
+https://github.com/pal-robotics/ddynamic_reconfigure.git
+
 ## Run RGBD camera 
 realsense-viewer
 On Rivz: roslaunch realsense2_camera rs_rgbd.launch 
