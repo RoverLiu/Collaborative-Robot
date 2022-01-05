@@ -28,7 +28,10 @@ https://github.com/pal-robotics/ddynamic_reconfigure.git
 
 ## Run RGBD camera 
 realsense-viewer
-On Rivz: roslaunch realsense2_camera rs_rgbd.launch 
+On Rivz: 
+1.roslaunch realsense2_camera rs_rgbd.launch (Not Working - error without message)
+2. roslaunch realsense2_camera rs_camera.launch initial_reset:=true (could see depth data)
+
 
 ## Object 3D estimation 
 1. install package 2d image detection: sudo apt-get install ros-melodic-find-object-2d
