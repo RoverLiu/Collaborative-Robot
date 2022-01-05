@@ -28,8 +28,11 @@ https://github.com/pal-robotics/ddynamic_reconfigure.git
 
 ## Run RGBD camera 
 realsense-viewer
+
 On Rivz: 
+
 1.roslaunch realsense2_camera rs_rgbd.launch (Not Working - error without message)
+
 2. roslaunch realsense2_camera rs_camera.launch initial_reset:=true (could see depth data)
 
 
