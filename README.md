@@ -73,4 +73,5 @@ cd summer_research
 
 git clone https://github.com/RoverLiu/Collaborative-Robot.git
 
-
+# Modify python version
+sudo update-alternatives --config python3
