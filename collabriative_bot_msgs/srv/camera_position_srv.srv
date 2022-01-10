@@ -1,0 +1,9 @@
+# provide the detail of the chocolate required
+int16 chocolate_type
+int16 number_required
+---
+# return a list of chocolate position
+float32[] x
+float32[] y
+float32[] z
+int16 state
