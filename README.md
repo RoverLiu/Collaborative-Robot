@@ -50,12 +50,12 @@ https://github.com/dovanhuong/object_detection_2d
 https://github.com/ros-industrial/industrial_core
 
 ### install hector-xacro-tools
-sudo apt install ros-kinetic-hector-xacro-tools
+sudo apt install ros-melodic-hector-xacro-tools
 
 ### get urdf file for yumi
 https://github.com/OrebroUniversity/yumi.git
 
-### Yumi Control File (ros-kinetic, 16.04)
+### Yumi Control File (ros-kinetic, 16.04 / ros-melodic, 18.04)
 https://github.com/kth-ros-pkg/yumi
 
 ### move it
@@ -64,7 +64,7 @@ sudo apt install ros-melodic-moveit
 ### create a robot arm with moveit
 https://www.youtube.com/watch?v=l4dtSRvlAjg
 
-#Starting the RAPID scripts (IMPORTANT)
+# Starting the RAPID scripts (IMPORTANT)
 
 Everytime you power on the YuMi, or you close the YuMi ROS nodes running on your PC, you need to run the RAPID scripts again (they are Normal tasks inside the IRC5 controller due to safety reasons).
 
