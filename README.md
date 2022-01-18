@@ -74,7 +74,7 @@ APPID:2433b578
 2. rosrun xfei_asr  iat_publish_speak (publish and subscribe)
 3. rostopic echo /xfspeech  (speech text generate)
 4. rostopic echo /xfwords   (Wrong message will show up here)
-5. rostopic pub xfwakeup std_msg/String "ok"
+5. rostopic pub xfwakeup std_msgs/String "ok"
 6. 
 
 
