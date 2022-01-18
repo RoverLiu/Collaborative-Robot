@@ -64,6 +64,20 @@ sudo apt install ros-melodic-moveit
 ### create a robot arm with moveit
 https://www.youtube.com/watch?v=l4dtSRvlAjg
 
+
+
+## Voice interface
+https://blog.csdn.net/xiao9469/article/details/109716656
+APPID:2433b578
+###Run speech reconigition
+1. roscore
+2. rosrun xfei_asr  iat_publish_speak (publish and subscribe)
+3. rostopic echo /xfspeech  (speech text generate)
+4. rostopic echo /xfwords   (Wrong message will show up here)
+5. rostopic pub xfwakeup std_msg/String "ok"
+6. 
+
+
 # Starting the RAPID scripts (IMPORTANT)
 
 Everytime you power on the YuMi, or you close the YuMi ROS nodes running on your PC, you need to run the RAPID scripts again (they are Normal tasks inside the IRC5 controller due to safety reasons).
