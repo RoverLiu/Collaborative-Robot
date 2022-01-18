@@ -64,6 +64,23 @@ sudo apt install ros-melodic-moveit
 ### create a robot arm with moveit
 https://www.youtube.com/watch?v=l4dtSRvlAjg
 
+#Starting the RAPID scripts (IMPORTANT)
+
+Everytime you power on the YuMi, or you close the YuMi ROS nodes running on your PC, you need to run the RAPID scripts again (they are Normal tasks inside the IRC5 controller due to safety reasons).
+
+To do that, press the following physical buttons on the FlexPendant:
+
+    Toggle the Motors On on the FlexPendant by pressing the upper-right corner button that has three horizontal lines.
+
+    Toggle the Auto mode on the FlexPendant by pressing the upper-right corner button that has two horizontal lines.
+
+    Move all the program pointers of the RAPID routines to main(), by pressing the upper-right corner button that has one centered horizontal line.
+
+    Press the Play button located in the bottom-right corner.
+
+You should see and hear the grippers performing three movements: a full opening, a full closing, and then opening again up to 10cm. This is the grippers calibration sequence, and it is advisable to wait for it to finish before running the YuMi ROS nodes.
+
+
 # clone our repository
 cd src
 
@@ -75,3 +92,5 @@ git clone https://github.com/RoverLiu/Collaborative-Robot.git
 
 # Modify python version
 sudo update-alternatives --config python3
+
+
