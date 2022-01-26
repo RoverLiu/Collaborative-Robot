@@ -75,7 +75,8 @@ https://blog.csdn.net/xiao9469/article/details/109716656
 3. rostopic echo /xfspeech  (speech text generate)
 4. rostopic echo /xfwords   (Wrong message will show up here)
 5. rostopic pub xfwakeup std_msgs/String "ok"
-6. 
+
+We are working on a different repo for UI. Check: https://github.com/RoverLiu/voice-based-UI.git
 
 
 # Starting the RAPID scripts (IMPORTANT)
