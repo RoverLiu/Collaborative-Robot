@@ -56,7 +56,7 @@ sudo apt install ros-melodic-hector-xacro-tools
 https://github.com/OrebroUniversity/yumi.git
 
 ### Yumi Control File (ros-kinetic, 16.04 / ros-melodic, 18.04)
-https://github.com/kth-ros-pkg/yumi
+https://github.com/RoverLiu/yumi.git
 
 ### move it
 sudo apt install ros-melodic-moveit
