@@ -23,17 +23,20 @@
 class robot_arm_control 
 {
     public:
-        robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv,  const std::string PLANNING_GROUP);
+        robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv,  const std::string PLANNING_GROUP, const std::string gripper_topic);
         ~robot_arm_control();
 
         // move arm to required position
-        bool auto_move_arm(char arm_to_move, geometry_msgs::Pose goal);
+        bool auto_move_arm( geometry_msgs::Pose goal);
 
         // move arm with a straight line
-        bool CartesianPath_move_arm(char arm_to_move, std::vector<geometry_msgs::Pose> waypoints);
+        void CartesianPath_move_arm( std::vector<geometry_msgs::Pose> waypoints);
 
-        // open or close gripper
-        void gripper_control(char arm_to_move, char state);
+        // get orientation value for required direction (1: front, 2: left, 3: right)
+        geometry_msgs::Quaternion get_direction(int direction);
+
+        // open or close gripper (0 means close, 1 means open)
+        void gripper_control( int state);
 
     private:
         // data
@@ -41,7 +44,16 @@ class robot_arm_control
         ros::NodeHandle _nh;
         ros::NodeHandle _nh_priv;
 
+        // gripper control pub
+        ros::Publisher gripper_pub;
+
+        // choose planning group for the arm
         const std::string PLANNING_GROUP;
+
+        // this is designed for yumi only
+        // control gripper
+        const std::string gripper_topic;
+
 
         // The :move_group_interface:`MoveGroupInterface` class can be easily
         // setup using just the name of the planning group you would like to control and plan for.
@@ -56,9 +68,8 @@ class robot_arm_control
         const robot_state::JointModelGroup* joint_model_group;
         // const robot_state::JointModelGroup* right_joint_model_group;
 
-        // testing methods
-        void wait();
-
+        // visualization
+        // moveit_visual_tools::MoveItVisualTools visual_tools();
 
 };
 

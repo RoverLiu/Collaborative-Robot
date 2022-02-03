@@ -85,21 +85,21 @@ int main(int argc, char** argv)
   // //
   // // The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
   // // and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
-  namespace rvt = rviz_visual_tools;
-  moveit_visual_tools::MoveItVisualTools visual_tools("yumi_joint_1_l");
-  visual_tools.deleteAllMarkers();
+  // namespace rvt = rviz_visual_tools;
+  // moveit_visual_tools::MoveItVisualTools visual_tools("yumi_joint_1_l");
+  // visual_tools.deleteAllMarkers();
 
-  // Remote control is an introspection tool that allows users to step through a high level script
-  // via buttons and keyboard shortcuts in RViz
-  visual_tools.loadRemoteControl();
+  // // Remote control is an introspection tool that allows users to step through a high level script
+  // // via buttons and keyboard shortcuts in RViz
+  // visual_tools.loadRemoteControl();
 
-  // RViz provides many types of markers, in this demo we will use text, cylinders, and spheres
-  Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
-  text_pose.translation().z() = 1.75;
-  visual_tools.publishText(text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
+  // // RViz provides many types of markers, in this demo we will use text, cylinders, and spheres
+  // Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
+  // text_pose.translation().z() = 1.75;
+  // visual_tools.publishText(text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
 
-  // Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
-  visual_tools.trigger();
+  // // Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
+  // visual_tools.trigger();
 
   // Getting Basic Information
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -155,13 +155,13 @@ int main(int argc, char** argv)
   // Visualizing plans
   // ^^^^^^^^^^^^^^^^^
   // We can also visualize the plan as a line with markers in RViz.
-  ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
-  visual_tools.publishAxisLabeled(target_pose1, "pose1");
-  visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
-  visual_tools.trigger();
-  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
-  wait();
+  // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
+  // visual_tools.publishAxisLabeled(target_pose1, "pose1");
+  // visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
+  // visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  // visual_tools.trigger();
+  // // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+  // wait();
 
   // Moving to a pose goal
   // ^^^^^^^^^^^^^^^^^^^^^
@@ -175,7 +175,7 @@ int main(int argc, char** argv)
   // and report success on execution of a trajectory.
 
   // /* Uncomment below line when working with a real robot */
-  // /* move_group.move(); */
+  move_group.move();
 
   // Planning to a joint-space goal 控制各个关节
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -199,10 +199,10 @@ int main(int argc, char** argv)
   ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (joint space goal) %s", success ? "" : "FAILED");
 
   // Visualize the plan in RViz
-  visual_tools.deleteAllMarkers();
-  visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
-  visual_tools.trigger();
+  // visual_tools.deleteAllMarkers();
+  // visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+  // visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  // visual_tools.trigger();
   // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
   wait();
 
@@ -302,12 +302,12 @@ int main(int argc, char** argv)
   ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
 
   // Visualize the plan in RViz
-  visual_tools.deleteAllMarkers();
-  visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
-  for (std::size_t i = 0; i < waypoints.size(); ++i)
-    visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
-  visual_tools.trigger();
+  // visual_tools.deleteAllMarkers();
+  // visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+  // visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
+  // for (std::size_t i = 0; i < waypoints.size(); ++i)
+  //   visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+  // visual_tools.trigger();
   // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
   wait();
 
