@@ -1,0 +1,6 @@
+<launch>
+
+  <node name="move_group_interface" pkg="robot_arm_module" type="move_group_interface" respawn="false" output="screen">
+  </node>
+
+</launch>

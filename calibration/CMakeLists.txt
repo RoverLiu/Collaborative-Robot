@@ -107,6 +107,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
+
+## Generate added messages and services with any dependencies
+# generate_messages()
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES calibration
@@ -138,7 +142,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/calibration_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/Calibration.py)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
