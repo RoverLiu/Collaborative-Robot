@@ -38,6 +38,12 @@ class robot_arm_control
         // open or close gripper (0 means close, 1 means open)
         void gripper_control( int state);
 
+        // get current pos
+        geometry_msgs::PoseStamped get_current_pose();
+
+        // reset robot arm pose
+        void reset_griper_direction();
+
     private:
         // data
         // ROS NodeHandle
@@ -67,6 +73,10 @@ class robot_arm_control
         // Raw pointers are frequently used to refer to the planning group for improved performance.
         const robot_state::JointModelGroup* joint_model_group;
         // const robot_state::JointModelGroup* right_joint_model_group;
+
+        moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+
+        const double pi = 3.1415926535;
 
         // visualization
         // moveit_visual_tools::MoveItVisualTools visual_tools();
