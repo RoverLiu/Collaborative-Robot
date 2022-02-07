@@ -82,8 +82,7 @@ void camera_handler::print_data()
 		<< "]\n";
     };
 
-    std::cout << "Iterate and print keys and values of unordered_map, being\n"
-                "explicit with the type of the iterator, n:\n";
+    std::cout << "Here is the data saved from camera\n";
     for( const std::pair<const int, std::vector<float>>& n : object_data ) {
         print_key_value(n.first, n.second);
     }

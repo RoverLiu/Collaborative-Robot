@@ -49,6 +49,8 @@ class camera_handler
         const int kitkat_mint = 16;
         const int kitkat_gold = 17;
         const int snickers = 18;
+        const int gripper_left = 19;
+        const int gripper_right = 20;
 
 
 };

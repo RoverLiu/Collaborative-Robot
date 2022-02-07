@@ -27,6 +27,20 @@ class arm_manager
         const std::string LEFT_GRIPPER_TOPIC = "/yumi/gripper_l_effort_cmd";
         const std::string RIGHT_GRIPPER_TOPIC = "/yumi/gripper_r_effort_cmd";
 
+        // default position for robot arm
+        geometry_msgs::Pose default_start_right_pos;
+        geometry_msgs::Pose default_start_left_pos;
+        geometry_msgs::Pose default_calibration_pos;
+
+
+
+        // save transform method
+        double k_x;
+        double b_x;
+        double k_y;
+        double b_y;
+
+
 
     public:
         arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv);
@@ -40,6 +54,8 @@ class arm_manager
         void wait();
 
         ~arm_manager();
+
+        void calibration();
 };
 
 

@@ -5,6 +5,7 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
 #include "camera_handler.h"
+#include "regression.h"
 
 
 
@@ -27,6 +28,7 @@ int main(int argc, char* argv[]) {
 
     // my_manager.wait();
 
+    //-----------------------------------------------------------------------------------
     // // testing 
     // // move somewhere
     // geometry_msgs::Pose target_pose;
@@ -66,11 +68,24 @@ int main(int argc, char* argv[]) {
     // }
 
     // test camera
-    camera_handler my_camera(nh, nh_priv);
-    while (true)
-    {
-        my_camera.print_data();
-    }
+    // camera_handler my_camera(nh, nh_priv);
+    // while (true)
+    // {
+    //     my_camera.print_data();
+    // }
+    
+    // test regression
+    std::vector<float> x = {1,2,3};
+    std::vector<float> y = {5,7,9};
+    regression reg(x,y);
+    // Printing the best fitting line
+    reg.PrintBestFittingLine();
+    std::cout << "Predicted value at 2060 = "
+        << reg.predict(2060) << std::endl;
+    std::cout << "The errorSquared = "
+        << reg.errorSquare() << std::endl;
+    std::cout << "Error in 2050 = "
+        << reg.errorIn(2050) << std::endl;
     
 
 }

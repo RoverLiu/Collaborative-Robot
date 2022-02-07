@@ -51,7 +51,7 @@ catkin_package(
 add_executable(move_group_interface src/arm_controller.cpp)
 target_link_libraries(move_group_interface ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(arm_manager src/robot_arm_control.cpp src/arm_manager.cpp src/main.cpp src/camera_handler.cpp)
+add_executable(arm_manager src/robot_arm_control.cpp src/arm_manager.cpp src/main.cpp src/camera_handler.cpp src/regression.cpp)
 target_link_libraries(arm_manager ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} ${OpenCV_LIBRARIES})
 ###########
 ## Build ##
