@@ -7,6 +7,7 @@
 #include "std_msgs/String.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "camera_handler.h"
 
 class arm_manager
 {
@@ -32,6 +33,8 @@ class arm_manager
 
         robot_arm_control * left_arm;
         robot_arm_control * right_arm;
+
+        camera_handler * my_camera;
 
         // testing methods
         void wait();

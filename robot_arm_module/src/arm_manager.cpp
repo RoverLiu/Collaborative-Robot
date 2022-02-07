@@ -13,12 +13,14 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
 
     left_arm = new robot_arm_control(nh, nh_priv, LEFT_PLANNING_GROUP, LEFT_GRIPPER_TOPIC);
     right_arm = new robot_arm_control(nh, nh_priv, RIGHT_PLANNING_GROUP, RIGHT_GRIPPER_TOPIC);
+    my_camera = new camera_handler(nh, nh_priv);
 }
 
 arm_manager::~arm_manager()
 {
     delete left_arm;
     delete right_arm;
+    delete my_camera;
 }
 
 /**

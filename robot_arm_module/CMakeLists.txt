@@ -25,6 +25,13 @@ find_package(catkin REQUIRED
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED system filesystem date_time thread)
 
+find_package(Qt4 COMPONENTS QtCore QtGui)
+FIND_PACKAGE(OpenCV REQUIRED) # tested on 2.3.1
+INCLUDE(${QT_USE_FILE})
+ADD_DEFINITIONS(${QT_DEFINITIONS})
+# add_executable(qt_test src/qt_test.cpp)
+# target_link_libraries(qt_test ${QT_LIBRARIES})
+
 # set(THIS_PACKAGE_INCLUDE_DIRS
 #   doc/interactivity/include
 # )
@@ -44,13 +51,13 @@ catkin_package(
 add_executable(move_group_interface src/arm_controller.cpp)
 target_link_libraries(move_group_interface ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(arm_manager src/robot_arm_control.cpp src/arm_manager.cpp src/main.cpp)
-target_link_libraries(arm_manager ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_executable(arm_manager src/robot_arm_control.cpp src/arm_manager.cpp src/main.cpp src/camera_handler.cpp)
+target_link_libraries(arm_manager ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} ${OpenCV_LIBRARIES})
 ###########
 ## Build ##
 ###########
 
-include_directories(include ${THIS_PACKAGE_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIRS})
+include_directories(include ${THIS_PACKAGE_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add_subdirectory(doc/kinematics)
 # add_subdirectory(doc/robot_model_and_robot_state)

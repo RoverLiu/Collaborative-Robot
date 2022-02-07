@@ -4,6 +4,8 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "geometry_msgs/Point.h"
+#include "camera_handler.h"
+
 
 
 int main(int argc, char* argv[]) {
@@ -15,15 +17,15 @@ int main(int argc, char* argv[]) {
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    arm_manager my_manager(nh, nh_priv);
+    // arm_manager my_manager(nh, nh_priv);
 
-    // open gripper
-    my_manager.left_arm->gripper_control(1);
+    // // open gripper
+    // my_manager.left_arm->gripper_control(1);
 
-    // reset gripper direction
-    my_manager.left_arm->reset_griper_direction();
+    // // reset gripper direction
+    // my_manager.left_arm->reset_griper_direction();
 
-    my_manager.wait();
+    // my_manager.wait();
 
     // // testing 
     // // move somewhere
@@ -63,5 +65,12 @@ int main(int argc, char* argv[]) {
     //     my_manager.left_arm->get_current_pose();
     // }
 
+    // test camera
+    camera_handler my_camera(nh, nh_priv);
+    while (true)
+    {
+        /* code */
+    }
+    
 
 }
