@@ -29,13 +29,19 @@ class camera_handler
 
         ros::Subscriber object_sub;
 
+        // save the data for object positions
+        // the sequence is : middle_x, middle_y, width, height
+        std::unordered_map<int, std::vector<float>> object_data;
+
+        // call back
         void objectsDetectedCallback(const std_msgs::Float32MultiArray::ConstPtr& msg);
-
-
 
     public:
         camera_handler(ros::NodeHandle nh, ros::NodeHandle nh_priv);
         ~camera_handler();
+
+        void print_data();
+
 
         // data
         // specific name for each object

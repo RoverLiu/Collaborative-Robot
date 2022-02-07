@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     camera_handler my_camera(nh, nh_priv);
     while (true)
     {
-        /* code */
+        my_camera.print_data();
     }
     
 

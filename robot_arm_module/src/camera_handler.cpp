@@ -50,19 +50,42 @@ void camera_handler::objectsDetectedCallback(const std_msgs::Float32MultiArray::
 			QPointF qtBottomLeft = qtHomography.map(QPointF(0,objectHeight));
 			QPointF qtBottomRight = qtHomography.map(QPointF(objectWidth,objectHeight));
 
-			printf("Object %d detected, Qt corners at (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",
-					id,
-					qtTopLeft.x(), qtTopLeft.y(),
-					qtTopRight.x(), qtTopRight.y(),
-					qtBottomLeft.x(), qtBottomLeft.y(),
-					qtBottomRight.x(), qtBottomRight.y());
+			// printf("Object %d detected, Qt corners at (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",
+			// 		id,
+			// 		qtTopLeft.x(), qtTopLeft.y(),
+			// 		qtTopRight.x(), qtTopRight.y(),
+			// 		qtBottomLeft.x(), qtBottomLeft.y(),
+			// 		qtBottomRight.x(), qtBottomRight.y());
 
             // save required data
-
-		}
+            object_data[id].push_back((qtTopLeft.x() + qtTopRight.x() + qtBottomLeft.x() + qtBottomRight.x())/4);
+            object_data[id].push_back((qtTopLeft.y() + qtTopRight.y() + qtBottomLeft.y() + qtBottomRight.y())/4);
+            object_data[id].push_back(objectWidth);
+            object_data[id].push_back(objectHeight);
+        }
 	}
 	else
 	{
 		printf("No objects detected.\n");
 	}
+}
+
+// 
+void camera_handler::print_data() 
+{
+    // Helper lambda function to print key:value pairs
+    auto print_key_value = [](int const& key, std::vector<float> const& value) {
+        std::cout << "Key:[" << key << "] x:[" << value.at(0)
+		<< "] y:[" << value.at(1)
+		<< "] width:[" << value.at(2)
+		<< "] height:[" << value.at(3)
+		<< "]\n";
+    };
+
+    std::cout << "Iterate and print keys and values of unordered_map, being\n"
+                "explicit with the type of the iterator, n:\n";
+    for( const std::pair<const int, std::vector<float>>& n : object_data ) {
+        print_key_value(n.first, n.second);
+    }
+    std::cout << "\n";
 }
