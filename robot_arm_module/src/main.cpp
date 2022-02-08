@@ -6,6 +6,7 @@
 #include "geometry_msgs/Point.h"
 #include "camera_handler.h"
 #include "regression.h"
+#include "order_handler.h"
 
 
 
@@ -18,18 +19,10 @@ int main(int argc, char* argv[]) {
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    arm_manager my_manager(nh, nh_priv);
 
-    my_manager.left_arm->gripper_control(0);
 
-    // my_manager.wait();
-    // my_manager.calibration();
-    geometry_msgs::Pose goal;
-    goal.position.x = 0.4000;
-    goal.position.y = 0.1000;
-    goal.position.z = 0.16000;
+    // arm_manager my_manager(nh, nh_priv);
 
-    my_manager.left_arm->pick_up_and_delivery(goal);
 
     // // open gripper
     // my_manager.left_arm->gripper_control(1);
@@ -102,11 +95,14 @@ int main(int argc, char* argv[]) {
         // my_manager.wait();
     // my_manager.calibration();
     // geometry_msgs::Pose goal;
-    // goal.position.x = 0.5000;
+    // goal.position.x = 0.4000;
     // goal.position.y = 0.1000;
-    // goal.position.z = 0.2000;
+    // goal.position.z = 0.16000;
 
     // my_manager.left_arm->pick_up_and_delivery(goal);
     
+    // order_handler test
+    // order_handler my_handler(nh, nh_priv);
+    // while(true) {my_handler.print_data();}
 
 }

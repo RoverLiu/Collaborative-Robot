@@ -6,6 +6,7 @@
 #include "std_msgs/String.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "order_handler.h"
 #include "camera_handler.h"
 
 arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv) 
@@ -15,6 +16,7 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     left_arm = new robot_arm_control(nh, nh_priv, LEFT_PLANNING_GROUP, LEFT_GRIPPER_TOPIC);
     right_arm = new robot_arm_control(nh, nh_priv, RIGHT_PLANNING_GROUP, RIGHT_GRIPPER_TOPIC);
     my_camera = new camera_handler(nh, nh_priv);
+    my_orders = new order_handler(nh, nh_priv);
 
     // set default position
     default_start_right_pos.position.x = 0.3000;
@@ -59,6 +61,7 @@ arm_manager::~arm_manager()
     delete left_arm;
     delete right_arm;
     delete my_camera;
+    delete my_orders;
     delete left_arm_regression_x;
     delete left_arm_regression_y;
     delete right_arm_regression_x;

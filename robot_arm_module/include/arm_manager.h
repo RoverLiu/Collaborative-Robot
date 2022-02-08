@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "camera_handler.h"
 #include "regression.h"
+#include "order_handler.h"
 
 class arm_manager
 {
@@ -67,6 +68,7 @@ class arm_manager
         robot_arm_control * right_arm;
 
         camera_handler * my_camera;
+        order_handler * my_orders;
 
         // testing methods
         void wait();
