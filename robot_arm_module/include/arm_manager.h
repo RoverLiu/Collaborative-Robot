@@ -75,7 +75,6 @@ class arm_manager
 
         void calibration();
 
-        void pick_up_and_delivery();
 };
 
 

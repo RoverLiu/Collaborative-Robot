@@ -20,8 +20,16 @@ int main(int argc, char* argv[]) {
 
     arm_manager my_manager(nh, nh_priv);
 
+    my_manager.left_arm->gripper_control(0);
+
     // my_manager.wait();
-    my_manager.calibration();
+    // my_manager.calibration();
+    geometry_msgs::Pose goal;
+    goal.position.x = 0.4000;
+    goal.position.y = 0.1000;
+    goal.position.z = 0.16000;
+
+    my_manager.left_arm->pick_up_and_delivery(goal);
 
     // // open gripper
     // my_manager.left_arm->gripper_control(1);
@@ -89,6 +97,16 @@ int main(int argc, char* argv[]) {
     //     << reg.errorSquare() << std::endl;
     // std::cout << "Error in 2050 = "
     //     << reg.errorIn(2050) << std::endl;
+
+    // pick up test
+        // my_manager.wait();
+    // my_manager.calibration();
+    // geometry_msgs::Pose goal;
+    // goal.position.x = 0.5000;
+    // goal.position.y = 0.1000;
+    // goal.position.z = 0.2000;
+
+    // my_manager.left_arm->pick_up_and_delivery(goal);
     
 
 }

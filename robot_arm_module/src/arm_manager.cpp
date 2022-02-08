@@ -46,6 +46,8 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     std::cout<<"left pos"<<std::endl;
     left_arm->get_current_pose();
 
+    left_arm->auto_move_arm(default_start_left_pos);
+
     
     std::cout<<"-------------------reset finished--------------------"<<std::endl;
     
@@ -187,7 +189,4 @@ void arm_manager::calibration() {
 
 }
 
-void arm_manager::pick_up_and_delivery() 
-{
-    
-}
+

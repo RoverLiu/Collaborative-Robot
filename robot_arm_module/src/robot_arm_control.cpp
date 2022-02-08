@@ -30,11 +30,11 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     joint_model_group =  move_group->getCurrentState()->getJointModelGroup(PLANNING_GROUP);
     // right_joint_model_group =  right_move_group->getCurrentState()->getJointModelGroup(RIGHT_PLANNING_GROUP);
 
-    std::printf("%s Planning frame: %s", PLANNING_GROUP,  move_group->getPlanningFrame().c_str());
+    // std::printf("%s Planning frame: %s", PLANNING_GROUP,  move_group->getPlanningFrame().c_str());
     // ROS_INFO_NAMED("tutorial", "Right Planning frame: %s", move_group->getPlanningFrame().c_str());
 
     // We can also print the name of the end-effector link for this group.
-    std::printf("%s End effector link: %s", PLANNING_GROUP,  move_group->getEndEffectorLink().c_str());
+    // std::printf("%s End effector link: %s", PLANNING_GROUP,  move_group->getEndEffectorLink().c_str());
     // ROS_INFO_NAMED("tutorial", "Right End effector link: %s", right_move_group->getEndEffectorLink().c_str());
 
     // // We can get a list of all the groups in the robot:
@@ -42,10 +42,10 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     // std::copy(move_group.getJointModelGroupNames().begin(), move_group.getJointModelGroupNames().end(),
     //             std::ostream_iterator<std::string>(std::cout, ", "));
 
-    std::printf("Planning frame: %s", move_group->getPlanningFrame().c_str());
+    // std::printf("Planning frame: %s", move_group->getPlanningFrame().c_str());
 
     // We can also print the name of the end-effector link for this group.
-    std::printf("End effector link: %s", move_group->getEndEffectorLink().c_str());
+    // std::printf("End effector link: %s", move_group->getEndEffectorLink().c_str());
 
     // We can get a list of all the groups in the robot:
     std::printf("Available Planning Groups:");
@@ -243,4 +243,67 @@ void robot_arm_control::reset_arm_pos(std::vector<double> joint_group_positions)
     // target_pose.orientation = get_direction(1);
 
     move_group->move();
+}
+
+/**
+ * @brief pick up the chocolate at given location
+ * 
+ * @param goal 
+ */
+void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal) 
+{
+    ros::Duration(3).sleep();  // Sleep for 0.5 second
+    // open gripper
+    gripper_control(1);
+    reset_griper_direction();
+    // ros::Duration(1).sleep();  // Sleep for 0.5 second
+    
+
+    // get current pos
+    geometry_msgs::PoseStamped current_detail = get_current_pose();
+    geometry_msgs::Pose current_pos = current_detail.pose;
+
+    // generate the path
+    std::vector<geometry_msgs::Pose> waypoints;
+    // waypoints.push_back(current_pos);
+
+    current_pos.position.z = goal.position.z;
+    waypoints.push_back(current_pos);
+
+    current_pos.position.y = goal.position.y;
+    waypoints.push_back(current_pos);
+
+    current_pos.position.x = goal.position.x;
+    waypoints.push_back(current_pos);
+
+    CartesianPath_move_arm(waypoints);
+
+    // pick up
+    gripper_control(0);
+
+    ros::Duration(1.0).sleep();
+
+
+    // delivery
+    waypoints.clear();
+    // waypoints.push_back(current_pos);
+
+    current_pos.position.z = 0.25000;
+    waypoints.push_back(current_pos);
+
+    current_pos.position.x = 0.3000;
+    waypoints.push_back(current_pos);
+
+    current_pos.position.y = 0.3000;
+    waypoints.push_back(current_pos);
+
+    CartesianPath_move_arm(waypoints);
+
+    ros::Duration(1).sleep();  // Sleep for 0.5 second
+
+    gripper_control(1);
+
+
+    
+    //  move 
 }

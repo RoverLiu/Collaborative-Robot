@@ -32,6 +32,8 @@ class robot_arm_control
         // move arm with a straight line
         void CartesianPath_move_arm( std::vector<geometry_msgs::Pose> waypoints);
 
+        void pick_up_and_delivery(geometry_msgs::Pose goal);
+
         // get orientation value for required direction (1: front, 2: left, 3: right)
         geometry_msgs::Quaternion get_direction(int direction);
 
