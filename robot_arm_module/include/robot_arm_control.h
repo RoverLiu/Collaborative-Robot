@@ -43,6 +43,7 @@ class robot_arm_control
 
         // reset robot arm pose
         void reset_griper_direction();
+        void reset_arm_pos(std::vector<double> joint_group_positions);
 
     private:
         // data

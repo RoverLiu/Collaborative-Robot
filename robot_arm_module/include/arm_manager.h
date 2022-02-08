@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "camera_handler.h"
+#include "regression.h"
 
 class arm_manager
 {
@@ -27,19 +28,36 @@ class arm_manager
         const std::string LEFT_GRIPPER_TOPIC = "/yumi/gripper_l_effort_cmd";
         const std::string RIGHT_GRIPPER_TOPIC = "/yumi/gripper_r_effort_cmd";
 
+        const std::vector<double> right_arm_default_angle = {-0.000103,
+            -2.268631,
+            -2.356222,
+            0.523748,
+            -0.000088,
+            0.702391,
+            -0.000187
+        };
+
+        const std::vector<double> left_arm_default_angle = {0.000144,
+            -2.268888,
+            2.356080,
+            0.523852,
+            0.000080,
+            0.698850,
+            -0.000160
+        };
+
         // default position for robot arm
         geometry_msgs::Pose default_start_right_pos;
         geometry_msgs::Pose default_start_left_pos;
         geometry_msgs::Pose default_calibration_pos;
 
-
+        float calibration_gap = 0.05000;
 
         // save transform method
-        double k_x;
-        double b_x;
-        double k_y;
-        double b_y;
-
+        regression * left_arm_regression_x;
+        regression * left_arm_regression_y;
+        regression * right_arm_regression_x;
+        regression * right_arm_regression_y;
 
 
     public:
@@ -56,6 +74,8 @@ class arm_manager
         ~arm_manager();
 
         void calibration();
+
+        void pick_up_and_delivery();
 };
 
 

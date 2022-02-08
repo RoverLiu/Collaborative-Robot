@@ -82,8 +82,9 @@ void regression::PrintBestFittingLine()
         calculateCoefficient();
         calculateConstantTerm();
     }
-    std::cout << "The best fitting line is y = "
-        << coeff << "x + " << constTerm << std::endl;
+    printf("The best fitting line is y = %.5fx+%f\n", coeff, constTerm);
+    // std::cout << "The best fitting line is y = "
+    //     << coeff << "x + " << constTerm << std::endl;
 }
 
 // Function to take input from the dataset

@@ -79,23 +79,23 @@ robot_arm_control::~robot_arm_control()
 // +y 像左侧桌子移动
 bool robot_arm_control::auto_move_arm( geometry_msgs::Pose goal) 
 {
-    ROS_INFO("enter");
+    // ROS_INFO("enter");
     std::cout<<goal.position<<std::endl;
     
     move_group->setPoseTarget(goal);
 
     // moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    ROS_INFO("enter2");
+    // ROS_INFO("enter2");
 
     move_group->plan(my_plan);
     // bool success = (move_group->plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
     // ROS_INFO("Move to position plannning result %s \n", success ? "" : "FAILED");
-    ROS_INFO("enter3");
+    // ROS_INFO("enter3");
 
     move_group->move();
 
-    ROS_INFO("enter3");
+    // ROS_INFO("enter3");
 
     return true;
 }
@@ -200,6 +200,19 @@ geometry_msgs::PoseStamped robot_arm_control::get_current_pose()
     std::cout<<current_pos.pose.position<<std::endl;
     std::cout<<current_pos.pose.orientation<<std::endl;
 
+    // get angel detail
+    // RobotState is the object that contains all the current position/velocity/acceleration data.
+    moveit::core::RobotStatePtr current_state = move_group->getCurrentState();
+    //
+    // Next get the current set of joint values for the group.
+    std::vector<double> joint_group_positions;
+    current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
+    printf("Pos detail in angle:\n");
+    for (double i : joint_group_positions) 
+    {
+        printf("%f\n", i);
+    }
+
     return current_pos;
 }
 
@@ -215,5 +228,19 @@ void robot_arm_control::reset_griper_direction()
     target_pose.orientation = get_direction(1);
 
     auto_move_arm(target_pose);
-    get_current_pose();
+    // get_current_pose();
+}
+
+void robot_arm_control::reset_arm_pos(std::vector<double> joint_group_positions) 
+{
+
+    move_group->setJointValueTarget(joint_group_positions);
+    move_group->plan(my_plan);
+
+    // // get current pose
+    // geometry_msgs::PoseStamped current_pose = get_current_pose();
+    // geometry_msgs::Pose target_pose = current_pose.pose;
+    // target_pose.orientation = get_direction(1);
+
+    move_group->move();
 }

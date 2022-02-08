@@ -18,7 +18,10 @@ int main(int argc, char* argv[]) {
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    // arm_manager my_manager(nh, nh_priv);
+    arm_manager my_manager(nh, nh_priv);
+
+    // my_manager.wait();
+    my_manager.calibration();
 
     // // open gripper
     // my_manager.left_arm->gripper_control(1);
@@ -75,17 +78,17 @@ int main(int argc, char* argv[]) {
     // }
     
     // test regression
-    std::vector<float> x = {1,2,3};
-    std::vector<float> y = {5,7,9};
-    regression reg(x,y);
-    // Printing the best fitting line
-    reg.PrintBestFittingLine();
-    std::cout << "Predicted value at 2060 = "
-        << reg.predict(2060) << std::endl;
-    std::cout << "The errorSquared = "
-        << reg.errorSquare() << std::endl;
-    std::cout << "Error in 2050 = "
-        << reg.errorIn(2050) << std::endl;
+    // std::vector<float> x = {1,2,3};
+    // std::vector<float> y = {5,7,9};
+    // regression reg(x,y);
+    // // Printing the best fitting line
+    // reg.PrintBestFittingLine();
+    // std::cout << "Predicted value at 2060 = "
+    //     << reg.predict(2060) << std::endl;
+    // std::cout << "The errorSquared = "
+    //     << reg.errorSquare() << std::endl;
+    // std::cout << "Error in 2050 = "
+    //     << reg.errorIn(2050) << std::endl;
     
 
 }

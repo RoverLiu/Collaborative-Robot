@@ -21,6 +21,8 @@ camera_handler::camera_handler(ros::NodeHandle nh, ros::NodeHandle nh_priv)
 :_nh(nh),_nh_priv(nh_priv)
 {
     object_sub = nh.subscribe("objects", 1000, & camera_handler::objectsDetectedCallback, this);
+	left_cal_flag = 0;
+	right_cal_flag = 0;
 }
 
 camera_handler::~camera_handler() 
@@ -39,6 +41,18 @@ void camera_handler::objectsDetectedCallback(const std_msgs::Float32MultiArray::
 			int id = (int)data[i];
 			float objectWidth = data[i+1];
 			float objectHeight = data[i+2];
+
+			// update flag 
+			if (id == gripper_left) 
+			{
+				std::cout<<"left flag set"<<std::endl;
+				left_cal_flag = 1;
+			} 
+			else if (id == gripper_right)
+			{
+				std::cout<<"right flag set"<<std::endl;
+				right_cal_flag = 1;
+			}
 
 			// Find corners Qt
 			QTransform qtHomography(data[i+3], data[i+4], data[i+5],
@@ -87,4 +101,37 @@ void camera_handler::print_data()
         print_key_value(n.first, n.second);
     }
     std::cout << "\n";
+}
+
+std::vector<float> camera_handler::get_pos(int id)
+{
+	std::cout<<"left flag: "<<left_cal_flag<<std::endl;
+	std::cout<<"right flag: "<<right_cal_flag<<std::endl;
+	if (id == gripper_left) 
+	{
+		if ( left_cal_flag == 0) 
+		{
+			std::vector<float> empty = {};
+			return empty;
+		}
+		else
+		{
+			left_cal_flag = 0;
+		}
+	}
+
+	if (id == gripper_right) 
+	{
+		if ( right_cal_flag == 0) 
+		{
+			std::vector<float> empty = {};
+			return empty;
+		}
+		else
+		{
+			right_cal_flag = 0;
+		}
+	}
+
+	return object_data[id];
 }
