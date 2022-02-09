@@ -21,7 +21,7 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     // set default position
     default_start_right_pos.position.x = 0.3500;
     default_start_right_pos.position.y = -0.25000;
-    default_start_right_pos.position.z = 0.2000;
+    default_start_right_pos.position.z = 0.200;
     default_start_right_pos.orientation = left_arm->get_direction(1);
 
     default_start_left_pos.position.x = 0.3500;
@@ -98,6 +98,7 @@ void arm_manager::calibration() {
     std::vector<float> arm_y;
 
     // move to specific location
+    std::vector<geometry_msgs::Pose> path_to_go;
     geometry_msgs::Pose current_pos = default_start_left_pos;
     current_pos.orientation = left_arm->get_direction(3);
 
@@ -105,7 +106,12 @@ void arm_manager::calibration() {
 
     // location 1
     current_pos.position.y -= 1.5*calibration_gap;
-    left_arm->auto_move_arm(current_pos);
+
+    // left_arm->auto_move_arm(current_pos);
+    path_to_go.push_back(current_pos);
+    left_arm->CartesianPath_move_arm(path_to_go);
+
+
     left_arm->gripper_control(0);
     ros::Duration(1).sleep();  // Sleep for 0.5 second
     std::vector<float> dat = my_camera->get_pos(my_camera->gripper_left);
@@ -285,7 +291,7 @@ void arm_manager::calibration() {
     wait();
     
     // // location 5
-    current_pos.position.y += 2*calibration_gap;
+    current_pos.position.y += calibration_gap;
     right_arm->auto_move_arm(current_pos);
     ros::Duration(1).sleep();  // Sleep for 0.5 second
     dat = my_camera->get_pos(my_camera->gripper_right);
@@ -336,7 +342,8 @@ void arm_manager::pick_up_chocolate(int arm_num)
     {
         return;
     }
-
+    std::cout<<"here is the chocolate ID required: "<<chocolate_id<<std::endl;
+    wait();
     // get pos
     std::vector<float> camera_pos = my_camera->get_pos(chocolate_id);
     while (camera_pos.empty()) 

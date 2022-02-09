@@ -65,7 +65,34 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     
     /*------------------------------------------set up griper control---------------------------------------*/
     gripper_pub = nh.advertise<std_msgs::Float64>(gripper_topic, 1000);
+
+    //------------------------------------------set up objects avoidance-------------------------------------
+    moveit_msgs::CollisionObject collision_object;
+    collision_object.header.frame_id = move_group->getPlanningFrame();
+    collision_object.id = "box1";
+    shape_msgs::SolidPrimitive primitive;
+    primitive.type = primitive.BOX;
+    primitive.dimensions.resize(3);
+    primitive.dimensions[0] = 1.5;
+    primitive.dimensions[1] = 2.0;
+    primitive.dimensions[2] = 0.2;
+
+    // position
+    geometry_msgs::Pose box_pose;
+    box_pose.orientation.w = 1.0;
+    box_pose.position.x = 0.5;
+    box_pose.position.y = 0.0;
+    box_pose.position.z = -0.2;
+
+    collision_object.primitives.push_back(primitive);
+    collision_object.primitive_poses.push_back(box_pose);
+    collision_object.operation = collision_object.ADD;
+
+    std::vector<moveit_msgs::CollisionObject> collision_objects;
+    collision_objects.push_back(collision_object);
     
+    ROS_INFO( "Add an object into the world");
+    planning_scene_interface.addCollisionObjects(collision_objects);
 }
 
 robot_arm_control::~robot_arm_control() 

@@ -29,10 +29,10 @@ class camera_handler
 
         ros::Subscriber object_sub;
 
-        // flags
-        // 0 means not updated, 1 means new data received
-        int left_cal_flag;
-        int right_cal_flag;
+        // // flags
+        // // 0 means not updated, 1 means new data received
+        // int left_cal_flag;
+        // int right_cal_flag;
 
         // save the data for object positions
         // the sequence is : middle_x, middle_y, width, height

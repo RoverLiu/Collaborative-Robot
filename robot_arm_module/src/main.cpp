@@ -26,6 +26,11 @@ int main(int argc, char* argv[]) {
 
     my_manager.calibration();
 
+    while (true) 
+    {
+        ROS_INFO("enter while loop");
+        my_manager.pick_up_chocolate(0);
+    }
 
     // // open gripper
     // my_manager.left_arm->gripper_control(1);
