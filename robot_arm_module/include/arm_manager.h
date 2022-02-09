@@ -47,6 +47,24 @@ class arm_manager
             -0.000160
         };
 
+        const std::vector<double> right_arm_finish_angle = {1.557327,
+            -2.392531,
+            -0.717145,
+            0.273227,
+            -0.238274,
+            0.295939,
+            0.483279,
+        };
+
+        const std::vector<double> left_arm_finish_angle = {-1.642680,
+            -2.398735,
+            0.631437,
+            0.260457,
+            0.250012,
+            0.273503,
+            -0.507425
+        };
+
         // default position for robot arm
         geometry_msgs::Pose default_start_right_pos;
         geometry_msgs::Pose default_start_left_pos;

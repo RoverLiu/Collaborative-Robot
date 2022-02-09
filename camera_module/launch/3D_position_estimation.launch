@@ -8,7 +8,7 @@
 	<arg name="objects_path"  default=""/>
 	<arg name="gui"           default="true"/>
 	<arg name="settings_path" default="~/.ros/find_object_2d.ini"/>
-	<arg name="session_path" default="$(find camera_module)/sessions/chocolate.bin"/>
+	<arg name="session_path" default="$(find camera_module)/sessions/clear_view.bin"/>
 
   <arg name="rgb_topic"         default="/camera/color/image_raw"/>
 	<arg name="depth_topic"       default="/camera/depth/image_rect_raw"/>
@@ -48,7 +48,7 @@
 		<param name="objects_path" value="$(arg objects_path)" type="str"/>
 		<param name="object_prefix" value="$(arg object_prefix)" type="str"/>
 		<param name="approx_sync" value="false" type="bool"/>
-		<param name="session_path" value="$(find camera_module)/sessions/chocolate.bin" type="str"/>
+		<param name="session_path" value="$(find camera_module)/sessions/clear_view.bin" type="str"/>
 				
 		<remap from="rgb/image_rect_color" to="$(arg rgb_topic)"/>
 		<remap from="depth_registered/image_raw" to="$(arg depth_topic)"/>
