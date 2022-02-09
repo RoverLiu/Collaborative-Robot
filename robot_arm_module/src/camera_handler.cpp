@@ -105,33 +105,50 @@ void camera_handler::print_data()
 
 std::vector<float> camera_handler::get_pos(int id)
 {
-	std::cout<<"left flag: "<<left_cal_flag<<std::endl;
-	std::cout<<"right flag: "<<right_cal_flag<<std::endl;
-	if (id == gripper_left) 
+	// clear everything to ensure the new data is received
+	object_data.clear();
+
+	// wait until data is ready
+	int maximum_count = 100;
+	for (int i = 0; i < maximum_count; i++) 
 	{
-		if ( left_cal_flag == 0) 
+		if (!object_data[id].empty()) 
 		{
-			std::vector<float> empty = {};
-			return empty;
+			break;
 		}
-		else
-		{
-			left_cal_flag = 0;
-		}
+		std::cout<<"waiting data"<<std::endl;
+        ros::Duration(0.5).sleep();  // Sleep for 0.5 second
 	}
 
-	if (id == gripper_right) 
-	{
-		if ( right_cal_flag == 0) 
-		{
-			std::vector<float> empty = {};
-			return empty;
-		}
-		else
-		{
-			right_cal_flag = 0;
-		}
-	}
+	// std::cout<<"left flag: "<<left_cal_flag<<std::endl;
+	// std::cout<<"right flag: "<<right_cal_flag<<std::endl;
+	// if (id == gripper_left) 
+	// {
+	// 	if ( left_cal_flag == 0) 
+	// 	{
+	// 		std::vector<float> empty = {};
+	// 		return empty;
+	// 	}
+	// 	else
+	// 	{
+	// 		left_cal_flag = 0;
+	// 	}
+	// }
 
+	// if (id == gripper_right) 
+	// {
+	// 	if ( right_cal_flag == 0) 
+	// 	{
+	// 		std::vector<float> empty = {};
+	// 		return empty;
+	// 	}
+	// 	else
+	// 	{
+	// 		right_cal_flag = 0;
+	// 	}
+	// }
+
+	// std::vector<float> dat = object_data[id];
+	// object_data.erase(id);
 	return object_data[id];
 }

@@ -53,6 +53,7 @@ class arm_manager
         geometry_msgs::Pose default_calibration_pos;
 
         float calibration_gap = 0.05000;
+        float default_chocolate_z_level = 0.180000;
 
         // save transform method
         regression * left_arm_regression_x;
@@ -76,6 +77,8 @@ class arm_manager
         ~arm_manager();
 
         void calibration();
+
+        void pick_up_chocolate(int arm_num);
 
 };
 
