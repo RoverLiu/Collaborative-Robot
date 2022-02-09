@@ -57,7 +57,7 @@ class camera_handler
         const int kitkat_mint = 30;
         const int kitkat_gold = 29;
         const int snickers = 26;
-        const int gripper_left = 35;
+        const int gripper_left = 44;
         const int gripper_right = 36;
 
 

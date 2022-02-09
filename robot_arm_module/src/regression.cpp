@@ -135,6 +135,13 @@ float regression::predict(float x)
     return coeff * x + constTerm;
 }
 
+// Function to revert the value
+// correspondng to some input
+float regression::revert(float y)
+{
+    return (y-constTerm) / coeff;
+}
+
 // Function that returns overall
 // sum of square of errors
 float regression::errorSquare()

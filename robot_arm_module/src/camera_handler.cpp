@@ -41,6 +41,12 @@ void camera_handler::objectsDetectedCallback(const std_msgs::Float32MultiArray::
 			int id = (int)data[i];
 			float objectWidth = data[i+1];
 			float objectHeight = data[i+2];
+			if (objectWidth > 150 || objectHeight > 150)
+			{
+				ROS_INFO("Wrong width or height");
+				std::cout<< "width: "<<objectWidth<<" heught: "<<objectHeight<<std::endl;
+				continue;
+			}
 
 			// // update flag 
 			// if (id == gripper_left) 

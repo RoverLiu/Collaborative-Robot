@@ -82,7 +82,7 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     box_pose.orientation.w = 1.0;
     box_pose.position.x = 0.5;
     box_pose.position.y = 0.0;
-    box_pose.position.z = -0.2;
+    box_pose.position.z = -0.1;
 
     collision_object.primitives.push_back(primitive);
     collision_object.primitive_poses.push_back(box_pose);
@@ -172,7 +172,7 @@ geometry_msgs::Quaternion robot_arm_control::get_direction(int direction)
             myQuaternion.setRPY( -pi/2, pi/2, 0 ); 
             break; //optional
         case 3  :
-            myQuaternion.setRPY( pi/2, -pi/2, 0 ); 
+            myQuaternion.setRPY( pi/2, pi/2, 0 ); 
             break; //optional
 
         case 4  :
@@ -277,7 +277,7 @@ void robot_arm_control::reset_arm_pos(std::vector<double> joint_group_positions)
  * 
  * @param goal 
  */
-void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal) 
+void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal, geometry_msgs::Pose end_pos) 
 {
     ros::Duration(3).sleep();  // Sleep for 0.5 second
     // open gripper
@@ -309,19 +309,19 @@ void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal)
     gripper_control(0);
 
     ros::Duration(1.0).sleep();
-
+    
 
     // delivery
     waypoints.clear();
     // waypoints.push_back(current_pos);
 
-    current_pos.position.z = 0.25000;
+    current_pos.position.z = end_pos.position.z;
     waypoints.push_back(current_pos);
 
-    current_pos.position.x = 0.3000;
+    current_pos.position.x = end_pos.position.x;
     waypoints.push_back(current_pos);
 
-    current_pos.position.y = 0.3000;
+    current_pos.position.y = end_pos.position.y;
     waypoints.push_back(current_pos);
 
     CartesianPath_move_arm(waypoints);

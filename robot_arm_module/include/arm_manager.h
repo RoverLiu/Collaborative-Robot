@@ -65,13 +65,24 @@ class arm_manager
             -0.507425
         };
 
+        // define which arm to pick (chocolate is on which side of the table)
+        const float horizontal_threshold = 300.00;
+        // calibration distance (compensate the size of gripper)
+        const float X_CALIBRATION = -0.050;
+        const float Y_CALIBRATION_LEFT = -0.050;
+        const float Y_CALIBRATION_RIGHT = 0.0;
+        // the distance difference between each position
+        float calibration_gap = 0.05000;
+        // height of chocolate
+        float default_chocolate_z_level = 0.20000;
+
+
         // default position for robot arm
         geometry_msgs::Pose default_start_right_pos;
         geometry_msgs::Pose default_start_left_pos;
-        geometry_msgs::Pose default_calibration_pos;
+        // geometry_msgs::Pose default_calibration_pos;
 
-        float calibration_gap = 0.05000;
-        float default_chocolate_z_level = 0.180000;
+
 
         // save transform method
         regression * left_arm_regression_x;
@@ -95,8 +106,9 @@ class arm_manager
         ~arm_manager();
 
         void calibration();
+        void calibration_new();
 
-        void pick_up_chocolate(int arm_num);
+        void pick_up_chocolate();
 
 };
 

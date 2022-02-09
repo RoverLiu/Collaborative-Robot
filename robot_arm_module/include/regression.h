@@ -83,6 +83,10 @@ public:
 	// correspondng to some input
 	float predict(float x);
 
+	// Function to predict the value
+	// correspondng to some input
+	float revert(float y);
+
 	// Function that returns overall
 	// sum of square of errors
 	float errorSquare();

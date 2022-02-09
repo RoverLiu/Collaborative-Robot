@@ -22,14 +22,14 @@ int main(int argc, char* argv[]) {
 
 
     arm_manager my_manager(nh, nh_priv);
-    my_manager.wait();
+    // my_manager.wait();
 
-    my_manager.calibration();
+    my_manager.calibration_new();
 
     while (true) 
     {
         ROS_INFO("enter while loop");
-        my_manager.pick_up_chocolate(0);
+        my_manager.pick_up_chocolate();
     }
 
     // // open gripper
