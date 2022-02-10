@@ -105,6 +105,17 @@ cd summer_research
 
 git clone https://github.com/RoverLiu/Collaborative-Robot.git
 
+#  Run
+Please run all modules in the sequence below:
+
+1. Go to yumi_depends_ws and source the setup.bash and run following two command:
+    - roslaunch yumi_launch yumi_traj_pos_control.launch
+    - roslaunch yumi_moveit_config move_group.launch
+2. Go to collabrative_robot_ws and source the setup.bash
+    - roslaunch camera_odule 3D_position_estimation.launch
+    - rosrun robot_arm_module arm_manager
+    - roslaunch xfei_asr UI.launch
+
 # Modify python version
 sudo update-alternatives --config python3
 
