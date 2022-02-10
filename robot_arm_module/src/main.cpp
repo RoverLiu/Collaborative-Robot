@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
 
     arm_manager my_manager(nh, nh_priv);
-    my_manager.wait();
+    // my_manager.wait();
 
     my_manager.calibration();
 

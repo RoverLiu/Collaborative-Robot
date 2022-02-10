@@ -399,7 +399,7 @@ void arm_manager::calibration() {
 
     // move to specific location
     geometry_msgs::Pose current_pos = default_start_left_pos;
-    current_pos.position.x += calibration_gap;
+    current_pos.position.x += 0.5*calibration_gap;
     current_pos.position.y -= calibration_gap;
     current_pos.orientation = left_arm->get_direction(3);
     left_arm->gripper_control(0);
@@ -458,7 +458,7 @@ void arm_manager::calibration() {
     current_pos = default_start_right_pos;
     current_pos.orientation = right_arm->get_direction(2);
     right_arm->gripper_control(0);
-    current_pos.position.x += calibration_gap;
+    current_pos.position.x += 0.5*calibration_gap;
     current_pos.position.y += calibration_gap;
 
     my_gap = calibration_gap;

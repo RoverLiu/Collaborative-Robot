@@ -1,0 +1,9 @@
+<launch>
+  
+  <include file="$(find camera_module)/launch/3D_position_estimation.launch" />
+
+  <node name="arm_manager" pkg="robot_arm_module" type="arm_manager" respawn="false" output="screen">
+  </node>
+
+
+</launch>

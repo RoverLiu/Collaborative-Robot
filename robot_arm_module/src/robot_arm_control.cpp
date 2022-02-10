@@ -53,7 +53,7 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
             std::ostream_iterator<std::string>(std::cout, ", "));
     
     // default
-    move_group->setPlanningTime(10);
+    move_group->setPlanningTime(30);
     // right_move_group->setPlanningTime(10);
     move_group->setPlannerId("RRTConnectkConfigDefault");
 

@@ -53,12 +53,20 @@ class camera_handler
 
         // data
         // specific id for each object
-        const int kitkat_chuncky = 28;
-        const int kitkat_mint = 30;
-        const int kitkat_gold = 29;
-        const int snickers = 26;
-        const int gripper_left = 44;
-        const int gripper_right = 36;
+        // value for vertical_chocolate.bin
+        const int kitkat_nestle = 53;
+        const int kitkat_mint = 52;
+        const int kitkat_gold = 51;
+        const int gripper_left = 55;
+        const int gripper_right = 57;
+
+        // value for clear_view.bin
+        // const int kitkat_chuncky = 28;
+        // const int kitkat_mint = 30;
+        // const int kitkat_gold = 29;
+        // const int snickers = 26;
+        // const int gripper_left = 44;
+        // const int gripper_right = 36;
 
 
 };
