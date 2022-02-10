@@ -29,6 +29,7 @@ class arm_manager
         const std::string LEFT_GRIPPER_TOPIC = "/yumi/gripper_l_effort_cmd";
         const std::string RIGHT_GRIPPER_TOPIC = "/yumi/gripper_r_effort_cmd";
 
+        // these angles are set for robot arm itself
         const std::vector<double> right_arm_default_angle = {-0.000103,
             -2.268631,
             -2.356222,
@@ -47,34 +48,36 @@ class arm_manager
             -0.000160
         };
 
-        const std::vector<double> right_arm_finish_angle = {1.557327,
-            -2.392531,
-            -0.717145,
-            0.273227,
-            -0.238274,
-            0.295939,
-            0.483279,
+        // my defined position
+        const std::vector<double> right_arm_finish_angle = {0.760268,
+            -2.393421,
+            -1.401536,
+            0.472449,
+            0.377103,
+            0.559988,
+            0.084814
         };
 
-        const std::vector<double> left_arm_finish_angle = {-1.642680,
-            -2.398735,
-            0.631437,
-            0.260457,
-            0.250012,
-            0.273503,
-            -0.507425
+        const std::vector<double> left_arm_finish_angle = {-0.798885,
+            -2.400014,
+            1.357257,
+            0.469838,
+            -0.393823,
+            0.555228,
+            -0.090077
         };
 
         // define which arm to pick (chocolate is on which side of the table)
         const float horizontal_threshold = 320.00;
         // calibration distance (compensate the size of gripper)
-        const float X_CALIBRATION = -0.20;
+        const float X_CALIBRATION = -0.140;
         const float Y_CALIBRATION_LEFT = -0.055;
-        const float Y_CALIBRATION_RIGHT = 0.055;
+        const float Y_CALIBRATION_RIGHT = 0.06;
         // the distance difference between each position
         float calibration_gap = 0.05000;
         // height of chocolate
-        float default_chocolate_z_level = 0.20000;
+        float right_default_chocolate_z_level = 0.22000;
+        float left_default_chocolate_z_level = 0.21000;
 
 
         // default position for robot arm
@@ -111,9 +114,6 @@ class arm_manager
         void pick_up_chocolate();
 
 };
-
-
-
 
 
 

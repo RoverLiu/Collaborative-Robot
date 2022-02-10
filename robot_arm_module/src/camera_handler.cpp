@@ -122,7 +122,7 @@ std::vector<float> camera_handler::get_pos(int id)
 		{
 			break;
 		}
-		std::cout<<"waiting data"<<std::endl;
+		// std::cout<<"waiting data"<<std::endl;
         ros::Duration(0.5).sleep();  // Sleep for 0.5 second
 	}
 
