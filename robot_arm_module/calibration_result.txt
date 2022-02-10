@@ -1,0 +1,6 @@
+left_arm
+The best fitting line is y = 0.00138x+0.013852
+The best fitting line is y = 0.00136x+-0.385286
+
+
+right_arm

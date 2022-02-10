@@ -89,7 +89,7 @@ void arm_manager::wait()
     std::cin >> a;
 }
 
-void arm_manager::calibration() {
+void arm_manager::calibration_discard() {
     // calibrate left arm
     // data to save
     std::vector<float> camera_x;
@@ -389,7 +389,7 @@ void arm_manager::calibration() {
     // wait();
 }
 
-void arm_manager::calibration_new() {
+void arm_manager::calibration() {
     // calibrate left arm
     // data to save
     std::vector<float> camera_x;
@@ -445,37 +445,57 @@ void arm_manager::calibration_new() {
     left_arm_regression_x->PrintBestFittingLine();
     left_arm_regression_y->PrintBestFittingLine();
 
-   
-    // // // location 7
-    // current_pos.position.x -= 2*calibration_gap;
-    // left_arm->auto_move_arm(current_pos);
-    // ros::Duration(3).sleep();  // Sleep for 0.5 second
-    // dat = my_camera->get_pos(my_camera->gripper_left);
-    // if (dat.empty()) 
-    // {
-    //     ROS_INFO("location 7 error");
-    // }
-    // arm_x.push_back(current_pos.position.x);
-    // arm_y.push_back(current_pos.position.y);
-    // camera_x.push_back(dat.at(0));
-    // camera_y.push_back(dat.at(1));
-    // std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    // ROS_INFO("location 7");
-    // // wait();
-
-
-
-//     // wait();
-//     std::cout<<"right arm calibration start"<<std::endl;
-//     // clear vector and redo everything for right arm
-//     arm_x.clear();
-//     arm_y.clear();
-//     camera_x.clear();
-//     camera_y.clear();
+    std::cout<<"right arm calibration start"<<std::endl;
+    // clear vector and redo everything for right arm
+    arm_x.clear();
+    arm_y.clear();
+    camera_x.clear();
+    camera_y.clear();
     
-//     // move to specific location
-//     current_pos = default_start_right_pos;
-//     current_pos.orientation = right_arm->get_direction(2);
+    // move to specific location
+    current_pos = default_start_right_pos;
+    current_pos.orientation = right_arm->get_direction(2);
+    right_arm->gripper_control(0);
+    current_pos.position.x -= 2 * calibration_gap;
+
+    my_gap = calibration_gap;
+    for (int i = 0; i < 4; i ++)
+    {
+        for (int j = 0; j < 4; j++) 
+        {
+            // move
+            right_arm->auto_move_arm(current_pos);
+            ros::Duration(3).sleep();  // Sleep for 0.5 second
+
+            // read and update
+            dat = my_camera->get_pos(my_camera->gripper_right); 
+            if (dat.empty()) 
+            {
+                std::cout<<"position: i: "<<i<<" j: "<<j<<" failed!"<<std::endl;
+            }
+            arm_x.push_back(current_pos.position.x);
+            arm_y.push_back(current_pos.position.y);
+            camera_x.push_back(dat.at(0));
+            camera_y.push_back(dat.at(1));
+            std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
+
+            // next pos
+            current_pos.position.x += my_gap;
+        }
+        current_pos.position.y += calibration_gap;
+        my_gap = -my_gap;
+
+    }
+
+    // move back
+    right_arm->reset_arm_pos(right_arm_finish_angle);
+    right_arm->reset_griper_direction();
+
+    // calculate
+    right_arm_regression_x = new regression(camera_y, arm_x);
+    right_arm_regression_y = new regression(camera_x, arm_y);
+    right_arm_regression_x->PrintBestFittingLine();
+    right_arm_regression_y->PrintBestFittingLine();
 
 //     // location 1
 //     current_pos.position.y += 1.5*calibration_gap;
@@ -641,6 +661,7 @@ void arm_manager::pick_up_chocolate()
     }
 
     wait();
+
     // get right arm to work
     robot_arm_control * my_arm = left_arm;
     geometry_msgs::Pose end_pos = default_start_left_pos;
@@ -651,7 +672,7 @@ void arm_manager::pick_up_chocolate()
     if (camera_pos.at(0) < horizontal_threshold) {
         my_arm = right_arm;
         end_pos = default_start_right_pos;
-        std::vector<double> default_pos = right_arm_finish_angle;
+        default_pos = right_arm_finish_angle;
         regression_x = right_arm_regression_x;
         regression_y = right_arm_regression_y;
         Y_CALIBRATION = Y_CALIBRATION_RIGHT;

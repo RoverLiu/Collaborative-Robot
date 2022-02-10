@@ -66,11 +66,11 @@ class arm_manager
         };
 
         // define which arm to pick (chocolate is on which side of the table)
-        const float horizontal_threshold = 300.00;
+        const float horizontal_threshold = 320.00;
         // calibration distance (compensate the size of gripper)
-        const float X_CALIBRATION = -0.050;
-        const float Y_CALIBRATION_LEFT = -0.050;
-        const float Y_CALIBRATION_RIGHT = 0.0;
+        const float X_CALIBRATION = -0.20;
+        const float Y_CALIBRATION_LEFT = -0.055;
+        const float Y_CALIBRATION_RIGHT = 0.055;
         // the distance difference between each position
         float calibration_gap = 0.05000;
         // height of chocolate
@@ -105,8 +105,8 @@ class arm_manager
 
         ~arm_manager();
 
+        void calibration_discard();
         void calibration();
-        void calibration_new();
 
         void pick_up_chocolate();
 
