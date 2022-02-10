@@ -517,7 +517,8 @@ void arm_manager::pick_up_chocolate()
 
     if (chocolate_id == -1)
     {
-        wait();
+        // wait();
+        ROS_INFO("Wait for new command");
         return;
     }
 
@@ -541,6 +542,7 @@ void arm_manager::pick_up_chocolate()
     regression * regression_x = left_arm_regression_x;
     regression * regression_y = left_arm_regression_y;
     float Y_CALIBRATION = Y_CALIBRATION_LEFT;
+    float X_CALIBRATION = X_CALIBRATION_LEFT;
     float default_chocolate_z_level = left_default_chocolate_z_level;
     if (camera_pos.at(0) < horizontal_threshold) {
         my_arm = right_arm;
@@ -550,6 +552,7 @@ void arm_manager::pick_up_chocolate()
         regression_y = right_arm_regression_y;
         Y_CALIBRATION = Y_CALIBRATION_RIGHT;
         default_chocolate_z_level = right_default_chocolate_z_level;
+        X_CALIBRATION = X_CALIBRATION_RIGHT;
     }
 
 

@@ -70,7 +70,8 @@ class arm_manager
         // define which arm to pick (chocolate is on which side of the table)
         const float horizontal_threshold = 320.00;
         // calibration distance (compensate the size of gripper)
-        const float X_CALIBRATION = -0.140;
+        const float X_CALIBRATION_LEFT = -0.160;
+        const float X_CALIBRATION_RIGHT = -0.140;
         const float Y_CALIBRATION_LEFT = -0.055;
         const float Y_CALIBRATION_RIGHT = 0.06;
         // the distance difference between each position
