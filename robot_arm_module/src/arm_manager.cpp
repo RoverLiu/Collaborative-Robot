@@ -105,10 +105,10 @@ arm_manager::~arm_manager()
 void arm_manager::load_default_calibration()
 {
     std::cout<<"Load default calibration values. Calibration is recommended for better accuracy"<<std::endl;
-    left_arm_regression_x = new regression(0.00127, 0.035642);
-    left_arm_regression_y = new regression(0.00121, -0.342244);
-    right_arm_regression_x = new regression(0.00115, 0.066185);
-    right_arm_regression_y = new regression(0.00126, -0.4959784);
+    left_arm_regression_x = new regression(0.00113, 0.077090);
+    left_arm_regression_y = new regression(0.00123, -0.344586);
+    right_arm_regression_x = new regression(0.00124, 0.043563);
+    right_arm_regression_y = new regression(0.00133, -0.511030);
 }
 
 /**

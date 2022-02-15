@@ -80,7 +80,7 @@ class arm_manager
 
         float default_drop_pos_x = 0.55;
         float default_drop_pos_y = 0.00;
-        float default_drop_pos_z = 0.23;
+        float default_drop_pos_z = 0.22;
 
         // define which arm to pick (chocolate is on which side of the table)
         const float horizontal_threshold = 320.00;

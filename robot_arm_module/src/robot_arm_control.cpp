@@ -82,13 +82,13 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     primitive.dimensions.resize(3);
     primitive.dimensions[0] = 1.5;
     primitive.dimensions[1] = 2.0;
-    primitive.dimensions[2] = 0.22;
+    primitive.dimensions[2] = 0.2;
 
     stand_primitive.type = stand_primitive.BOX;
     stand_primitive.dimensions.resize(3);
     stand_primitive.dimensions[0] = 0.05;
     stand_primitive.dimensions[1] = 1.0;
-    stand_primitive.dimensions[2] = 0.11;
+    stand_primitive.dimensions[2] = 0.15;
 
 
     // position
@@ -102,7 +102,7 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     stand_pose.orientation.w = 1.0;
     stand_pose.position.x = 0.4;
     stand_pose.position.y = 0.0;
-    stand_pose.position.z = 0.04;
+    stand_pose.position.z = 0.075;
 
     table.primitives.push_back(primitive);
     table.primitive_poses.push_back(box_pose);
