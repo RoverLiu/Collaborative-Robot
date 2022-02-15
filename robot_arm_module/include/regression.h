@@ -47,6 +47,7 @@ public:
 	// values to all the terms in the
 	// object of class regression
 	regression(std::vector<float> x, std::vector<float> y);
+	regression(float coeff, float constTerm);
 
 	// Function that calculate the coefficient/
 	// slope of the best fitting line

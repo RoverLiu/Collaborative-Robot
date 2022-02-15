@@ -67,15 +67,29 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     gripper_pub = nh.advertise<std_msgs::Float64>(gripper_topic, 1000);
 
     //------------------------------------------set up objects avoidance-------------------------------------
-    moveit_msgs::CollisionObject collision_object;
-    collision_object.header.frame_id = move_group->getPlanningFrame();
-    collision_object.id = "box1";
+    // set up table
+    moveit_msgs::CollisionObject table;
+    moveit_msgs::CollisionObject stand;
+
+    table.header.frame_id = move_group->getPlanningFrame();
+    stand.header.frame_id = move_group->getPlanningFrame();
+    table.id = "table";
+    stand.id = "chocolate_stand";
     shape_msgs::SolidPrimitive primitive;
+    shape_msgs::SolidPrimitive stand_primitive;
+
     primitive.type = primitive.BOX;
     primitive.dimensions.resize(3);
     primitive.dimensions[0] = 1.5;
     primitive.dimensions[1] = 2.0;
-    primitive.dimensions[2] = 0.2;
+    primitive.dimensions[2] = 0.22;
+
+    stand_primitive.type = stand_primitive.BOX;
+    stand_primitive.dimensions.resize(3);
+    stand_primitive.dimensions[0] = 0.05;
+    stand_primitive.dimensions[1] = 1.0;
+    stand_primitive.dimensions[2] = 0.11;
+
 
     // position
     geometry_msgs::Pose box_pose;
@@ -84,12 +98,23 @@ robot_arm_control::robot_arm_control(ros::NodeHandle nh, ros::NodeHandle nh_priv
     box_pose.position.y = 0.0;
     box_pose.position.z = -0.1;
 
-    collision_object.primitives.push_back(primitive);
-    collision_object.primitive_poses.push_back(box_pose);
-    collision_object.operation = collision_object.ADD;
+    geometry_msgs::Pose stand_pose;
+    stand_pose.orientation.w = 1.0;
+    stand_pose.position.x = 0.4;
+    stand_pose.position.y = 0.0;
+    stand_pose.position.z = 0.04;
+
+    table.primitives.push_back(primitive);
+    table.primitive_poses.push_back(box_pose);
+    table.operation = table.ADD;
+
+    stand.primitives.push_back(stand_primitive);
+    stand.primitive_poses.push_back(stand_pose);
+    stand.operation = stand.ADD;
 
     std::vector<moveit_msgs::CollisionObject> collision_objects;
-    collision_objects.push_back(collision_object);
+    collision_objects.push_back(table);
+    collision_objects.push_back(stand);
     
     ROS_INFO( "Add an object into the world");
     planning_scene_interface.addCollisionObjects(collision_objects);
@@ -153,7 +178,7 @@ void robot_arm_control::CartesianPath_move_arm( std::vector<geometry_msgs::Pose>
 /**
  * @brief return w value for differetn direction
  * 
- * @param direction 1: front, 2: left, 3: right, 4 up, 5 down
+ * @param direction 1: front, 2: left, 3: right, 4 down, 5 up
  * @return geometry_msgs::Quaternion 
  */
 geometry_msgs::Quaternion robot_arm_control::get_direction(int direction)
@@ -176,11 +201,11 @@ geometry_msgs::Quaternion robot_arm_control::get_direction(int direction)
             break; //optional
 
         case 4  :
-            myQuaternion.setRPY( 0, 0, 0 ); 
+            myQuaternion.setRPY( 0, pi, 0 ); 
             break; //optional
 
         case 5  :
-            myQuaternion.setRPY( 0, pi, 0 ); 
+            myQuaternion.setRPY( 0, 0, 0 ); 
             break; //optional
 
         // you can have any number of case statements.
@@ -294,6 +319,7 @@ void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal, geometry_
     std::vector<geometry_msgs::Pose> waypoints;
     // waypoints.push_back(current_pos);
 
+    // go to that pos
     current_pos.position.z = goal.position.z;
     waypoints.push_back(current_pos);
 
@@ -305,11 +331,9 @@ void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal, geometry_
 
     CartesianPath_move_arm(waypoints);
 
+    ros::Duration(3.0).sleep();
     // pick up
     gripper_control(0);
-
-    ros::Duration(1.0).sleep();
-    
 
     // delivery
     waypoints.clear();
@@ -318,15 +342,17 @@ void robot_arm_control::pick_up_and_delivery(geometry_msgs::Pose goal, geometry_
     current_pos.position.z = end_pos.position.z;
     waypoints.push_back(current_pos);
 
-    current_pos.position.x = end_pos.position.x;
+    current_pos.position.y = end_pos.position.y;
     waypoints.push_back(current_pos);
 
-    current_pos.position.y = end_pos.position.y;
+    current_pos.position.x = end_pos.position.x;
     waypoints.push_back(current_pos);
 
     CartesianPath_move_arm(waypoints);
 
-    ros::Duration(1).sleep();  // Sleep for 0.5 second
+    auto_move_arm(end_pos);
+
+    ros::Duration(3.0).sleep();  // Sleep for 0.5 second
 
     gripper_control(1);
 

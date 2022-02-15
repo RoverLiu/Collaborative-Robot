@@ -19,37 +19,57 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     my_orders = new order_handler(nh, nh_priv);
 
     // set default position
-    default_start_right_pos.position.x = 0.20;
-    default_start_right_pos.position.y = -0.3000;
-    default_start_right_pos.position.z = 0.2500;
+    // roughly +- 0.6 is the maximum distance it cango
+    default_start_right_pos.position.x = default_start_right_pos_x;
+    default_start_right_pos.position.y = -default_start_right_pos_y;
+    default_start_right_pos.position.z = default_start_right_pos_z;
     default_start_right_pos.orientation = left_arm->get_direction(1);
 
-    default_start_left_pos.position.x = 0.20;
-    default_start_left_pos.position.y = 0.3000;
-    default_start_left_pos.position.z = 0.2500;
+    default_start_left_pos.position.x = default_start_right_pos_x;
+    default_start_left_pos.position.y = default_start_right_pos_y;
+    default_start_left_pos.position.z = default_start_right_pos_z;
     default_start_left_pos.orientation = right_arm->get_direction(1);
+
+    default_drop_pos.position.x = default_drop_pos_x;
+    default_drop_pos.position.y = default_drop_pos_y;
+    default_drop_pos.position.z = default_drop_pos_z;
+    default_drop_pos.orientation = right_arm->get_direction(4);
 
     // default_calibration_pos.position.x = 0.30000;
     // default_calibration_pos.position.y = -0.00000;
     // default_calibration_pos.position.z = 0.2000;
     // default_calibration_pos.orientation = left_arm->get_direction(3);
 
+    // left_arm->auto_move_arm(default_drop_pos);
+    // left_arm->get_current_pose();
+    // wait();
+
     // reset
     left_arm->reset_arm_pos(left_arm_default_angle);
     right_arm->reset_arm_pos(right_arm_default_angle);
 
-    // move to default position 
-    std::cout<<"right pos"<<std::endl;
-    right_arm->get_current_pose();
+    // // get current pos
+    
     // left_arm->auto_move_arm(default_start_left_pos);
-    // left_arm->reset_arm_pos();
-    // left_arm->reset_griper_direction();
-    // left_arm->gripper_control(0);
-    std::cout<<"left pos"<<std::endl;
-    left_arm->get_current_pose();
+    // right_arm->auto_move_arm(default_start_right_pos);
+    // left_arm->get_current_pose();
+    // right_arm->get_current_pose();
 
-    left_arm->auto_move_arm(default_start_left_pos);
-    right_arm->auto_move_arm(default_start_right_pos);
+    // wait();
+
+
+    // // move to default position 
+    // std::cout<<"right pos"<<std::endl;
+    // right_arm->get_current_pose();
+    // // left_arm->auto_move_arm(default_start_left_pos);
+    // // left_arm->reset_arm_pos();
+    // // left_arm->reset_griper_direction();
+    // // left_arm->gripper_control(0);
+    // std::cout<<"left pos"<<std::endl;
+    // left_arm->get_current_pose();
+
+    left_arm->reset_arm_pos(left_arm_finish_angle);
+    right_arm->reset_arm_pos(right_arm_finish_angle);
 
     // move to default position 
     std::cout<<"right pos default angle"<<std::endl;
@@ -79,6 +99,19 @@ arm_manager::~arm_manager()
 }
 
 /**
+ * @brief load default calibration values
+ * 
+ */
+void arm_manager::load_default_calibration()
+{
+    std::cout<<"Load default calibration values. Calibration is recommended for better accuracy"<<std::endl;
+    left_arm_regression_x = new regression(0.00127, 0.035642);
+    left_arm_regression_y = new regression(0.00121, -0.342244);
+    right_arm_regression_x = new regression(0.00115, 0.066185);
+    right_arm_regression_y = new regression(0.00126, -0.4959784);
+}
+
+/**
  * @brief wait until a input from keyboard
  * 
  */
@@ -87,306 +120,6 @@ void arm_manager::wait()
     std::cout<<"Wait to continue, enter anything"<<std::endl;
     std::string a;
     std::cin >> a;
-}
-
-void arm_manager::calibration_discard() {
-    // calibrate left arm
-    // data to save
-    std::vector<float> camera_x;
-    std::vector<float> arm_x;
-    std::vector<float> camera_y;
-    std::vector<float> arm_y;
-
-    // move to specific location
-    std::vector<geometry_msgs::Pose> path_to_go;
-    geometry_msgs::Pose current_pos = default_start_left_pos;
-    current_pos.orientation = left_arm->get_direction(3);
-
-    std::cout<<"right arm calibration start"<<std::endl;
-
-    // location 1
-    // current_pos.position.y -= calibration_gap;
-
-    left_arm->auto_move_arm(current_pos);
-    // path_to_go.push_back(current_pos);
-    // left_arm->CartesianPath_move_arm(path_to_go);
-
-
-    left_arm->gripper_control(0);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    std::vector<float> dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 1 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 1");
-    // left_arm->auto_move_arm(default_start_left_pos);
-    // wait();
-
-    // location 2
-    current_pos.position.x += calibration_gap;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left); 
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 2 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 2");
-    // wait();
-
-    // location 3
-    current_pos.position.x -= calibration_gap*2;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 3 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 3");
-    // wait();
-
-    // location 4
-    current_pos.position.x += calibration_gap;
-    current_pos.position.y -= 2*calibration_gap;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 4 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 4");
-    // wait();
-    
-    // // location 5
-    current_pos.position.y -= 2*calibration_gap;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 5 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 5");
-    // wait();
-
-    // // location 6
-    current_pos.position.x += calibration_gap;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 6 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 6");
-    // wait();
-
-    // // location 7
-    current_pos.position.x -= 2*calibration_gap;
-    left_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_left);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 7 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 7");
-    // wait();
-
-    // move back
-    left_arm->reset_arm_pos(left_arm_finish_angle);
-    left_arm->reset_griper_direction();
-
-    // calculate
-    left_arm_regression_x = new regression(camera_x, arm_x);
-    left_arm_regression_y = new regression(camera_y, arm_y);
-    left_arm_regression_x->PrintBestFittingLine();
-    left_arm_regression_y->PrintBestFittingLine();
-
-    // wait();
-    std::cout<<"right arm calibration start"<<std::endl;
-    // clear vector and redo everything for right arm
-    arm_x.clear();
-    arm_y.clear();
-    camera_x.clear();
-    camera_y.clear();
-    
-    // move to specific location
-    current_pos = default_start_right_pos;
-    current_pos.orientation = right_arm->get_direction(2);
-
-    // location 1
-    current_pos.position.y += 1.5*calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    right_arm->gripper_control(0);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 1 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 1");
-    // right_arm->auto_move_arm(default_start_left_pos);
-    // wait();
-
-    // location 2
-    current_pos.position.x += calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right); 
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 2 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 2");
-    // wait();
-
-    // location 3
-    current_pos.position.x -= calibration_gap*2;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 3 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 3");
-    // wait();
-
-    // location 4
-    current_pos.position.x += calibration_gap;
-    current_pos.position.y += 2*calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 4 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 4");
-    // wait();
-    
-    // // location 5
-    current_pos.position.y += calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 5 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 5");
-    // wait();
-
-    // // location 6
-    current_pos.position.x += calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 6 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 6");
-    // wait();
-
-    // // location 7
-    current_pos.position.x -= 2*calibration_gap;
-    right_arm->auto_move_arm(current_pos);
-    ros::Duration(3).sleep();  // Sleep for 0.5 second
-    dat = my_camera->get_pos(my_camera->gripper_right);
-    if (dat.empty()) 
-    {
-        ROS_INFO("location 7 error");
-    }
-    arm_x.push_back(current_pos.position.x);
-    arm_y.push_back(current_pos.position.y);
-    camera_x.push_back(dat.at(0));
-    camera_y.push_back(dat.at(1));
-    std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-    ROS_INFO("location 7");
-    // wait();
-
-    // move back
-    right_arm->reset_arm_pos(right_arm_finish_angle);
-    left_arm->reset_griper_direction();
-
-    // calculate
-    right_arm_regression_x = new regression(camera_x, arm_x);
-    right_arm_regression_y = new regression(camera_y, arm_y);
-    right_arm_regression_x->PrintBestFittingLine();
-    right_arm_regression_y->PrintBestFittingLine();
-
-    std::cout<<"Calibration done!"<<std::endl;
-    // wait();
 }
 
 void arm_manager::calibration() {
@@ -399,8 +132,9 @@ void arm_manager::calibration() {
 
     // move to specific location
     geometry_msgs::Pose current_pos = default_start_left_pos;
-    current_pos.position.x += 0.5*calibration_gap;
+    current_pos.position.x += 3.5*calibration_gap;
     current_pos.position.y -= calibration_gap;
+    current_pos.position.z -= 2*calibration_gap;
     current_pos.orientation = left_arm->get_direction(3);
     left_arm->gripper_control(0);
     std::vector<float> dat;
@@ -428,6 +162,7 @@ void arm_manager::calibration() {
             camera_x.push_back(dat.at(0));
             camera_y.push_back(dat.at(1));
             std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
+            // left_arm->get_current_pose();
 
             // next pos
             current_pos.position.x += my_gap;
@@ -458,8 +193,9 @@ void arm_manager::calibration() {
     current_pos = default_start_right_pos;
     current_pos.orientation = right_arm->get_direction(2);
     right_arm->gripper_control(0);
-    current_pos.position.x += 0.5*calibration_gap;
+    current_pos.position.x += 3.5*calibration_gap;
     current_pos.position.y += calibration_gap;
+    current_pos.position.z -= 2*calibration_gap;
 
     my_gap = calibration_gap;
     for (int i = 0; i < 4; i ++)
@@ -482,6 +218,7 @@ void arm_manager::calibration() {
             camera_x.push_back(dat.at(0));
             camera_y.push_back(dat.at(1));
             std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
+            // right_arm->get_current_pose();
 
             // next pos
             current_pos.position.x += my_gap;
@@ -513,12 +250,12 @@ void arm_manager::pick_up_chocolate()
 
     // get order
     int chocolate_id = my_orders->get_chocolate_to_pick();
-    std::cout<<"here is the chocolate ID required: "<<chocolate_id<<std::endl;
+    // my_orders->print_data();
 
     if (chocolate_id == -1)
     {
         // wait();
-        ROS_INFO("Wait for new command");
+        // ROS_INFO("Wait for new command");
         return;
     }
 
@@ -533,11 +270,14 @@ void arm_manager::pick_up_chocolate()
         // todo: broadcast a message
     }
 
+    std::cout<<"here is the chocolate ID required: "<<chocolate_id<<std::endl;
+
+
     // wait();
 
     // get right arm to work
     robot_arm_control * my_arm = left_arm;
-    geometry_msgs::Pose end_pos = default_start_left_pos;
+    geometry_msgs::Pose end_pos = default_drop_pos;
     std::vector<double> default_pos = left_arm_finish_angle;
     regression * regression_x = left_arm_regression_x;
     regression * regression_y = left_arm_regression_y;
@@ -546,7 +286,7 @@ void arm_manager::pick_up_chocolate()
     float default_chocolate_z_level = left_default_chocolate_z_level;
     if (camera_pos.at(0) < horizontal_threshold) {
         my_arm = right_arm;
-        end_pos = default_start_right_pos;
+        // end_pos = default_start_right_pos;
         default_pos = right_arm_finish_angle;
         regression_x = right_arm_regression_x;
         regression_y = right_arm_regression_y;

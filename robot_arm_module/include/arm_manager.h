@@ -48,24 +48,39 @@ class arm_manager
             -0.000160
         };
 
-        // my defined position
-        const std::vector<double> right_arm_finish_angle = {0.760268,
-            -2.393421,
-            -1.401536,
-            0.472449,
-            0.377103,
-            0.559988,
-            0.084814
+        // my defined position (beginning or ending position for each task)
+        const std::vector<double> right_arm_finish_angle = {0.442606,
+            -2.394394,
+            -1.717076,
+            0.384959,
+            0.315967,
+            0.872647,
+            0.135105
         };
 
-        const std::vector<double> left_arm_finish_angle = {-0.798885,
-            -2.400014,
-            1.357257,
-            0.469838,
-            -0.393823,
-            0.555228,
-            -0.090077
+        const std::vector<double> left_arm_finish_angle = {-0.463526,
+            -2.399707,
+            1.691992,
+            0.379761,
+            -0.326887,
+            0.879700,
+            -0.141335
         };
+
+        // default position for robot arm to start
+        geometry_msgs::Pose default_start_right_pos;
+        geometry_msgs::Pose default_start_left_pos;
+
+        float default_start_right_pos_x = 0.1;
+        float default_start_right_pos_y = 0.3;
+        float default_start_right_pos_z = 0.25;
+
+        // default position for robot arm to drop chocolate
+        geometry_msgs::Pose default_drop_pos;
+
+        float default_drop_pos_x = 0.55;
+        float default_drop_pos_y = 0.00;
+        float default_drop_pos_z = 0.23;
 
         // define which arm to pick (chocolate is on which side of the table)
         const float horizontal_threshold = 320.00;
@@ -77,14 +92,13 @@ class arm_manager
         // the distance difference between each position
         float calibration_gap = 0.05000;
         // height of chocolate
-        float right_default_chocolate_z_level = 0.22000;
-        float left_default_chocolate_z_level = 0.21000;
+        float right_default_chocolate_z_level = 0.12000;
+        float left_default_chocolate_z_level = 0.11000;
 
 
-        // default position for robot arm
-        geometry_msgs::Pose default_start_right_pos;
-        geometry_msgs::Pose default_start_left_pos;
-        // geometry_msgs::Pose default_calibration_pos;
+
+
+        
 
 
 
@@ -109,10 +123,14 @@ class arm_manager
 
         ~arm_manager();
 
-        void calibration_discard();
+        // void calibration_discard();
         void calibration();
 
+        // pick up chocolate based on command saved in order_handler class
         void pick_up_chocolate();
+
+        // load default calibrations
+        void load_default_calibration();
 
 };
 

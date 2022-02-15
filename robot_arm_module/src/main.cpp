@@ -24,7 +24,9 @@ int main(int argc, char* argv[]) {
     arm_manager my_manager(nh, nh_priv);
     // my_manager.wait();
 
+    // choose between calibration or default values
     my_manager.calibration();
+    // my_manager.load_default_calibration();
 
     while (true) 
     {

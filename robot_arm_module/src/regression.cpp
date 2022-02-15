@@ -24,6 +24,11 @@ x(x), y(y)
     calculateBasics();
 }
 
+// another constructor with default values
+regression::regression(float coeff, float constTerm) :
+coeff(coeff), constTerm(constTerm)
+{}
+
 // Function that calculate the coefficient/
 // slope of the best fitting line
 void regression::calculateCoefficient()
