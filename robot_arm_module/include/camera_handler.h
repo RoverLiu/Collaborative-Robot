@@ -56,8 +56,8 @@ class camera_handler
         // value for vertical_chocolate.bin
         const int kitkat_nestle = 53;
         const int kitkat_mint = 52;
-        const int kitkat_gold = 51;
-        const int kitkat_cookie_collision = 58;
+        const int kitkat_gold = 61;
+        const int kitkat_cookie_collision = 62;
         const int gripper_left = 55;
         const int gripper_right = 57;
 

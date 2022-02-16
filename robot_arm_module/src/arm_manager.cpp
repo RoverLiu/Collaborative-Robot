@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "order_handler.h"
 #include "camera_handler.h"
+#include "play_audio.h"
+
 
 arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv) 
 :_nh(nh),_nh_priv(nh_priv)
@@ -128,7 +130,7 @@ void arm_manager::calibration() {
     left_arm->detach_stand_object();
     right_arm->detach_stand_object();
 
-
+    MsgSpeakOut("calibration-start.wav");
     // calibrate left arm
     // data to save
     std::vector<float> camera_x;
@@ -251,6 +253,9 @@ void arm_manager::calibration() {
     // detach the stand
     left_arm->attach_stand_object();
     right_arm->attach_stand_object();
+
+    MsgSpeakOut("calibration-finish.wav");
+
 }
 
 
@@ -277,6 +282,8 @@ void arm_manager::pick_up_chocolate()
     if (camera_pos.empty()) 
     {
         ROS_INFO("chocolate not found ");
+        MsgSpeakOut("choose-another-one.wav");
+
         // camera_pos = my_camera->get_pos(chocolate_id);
         return;
         // todo: broadcast a message
@@ -325,9 +332,38 @@ void arm_manager::pick_up_chocolate()
     // pick it up
     my_arm->pick_up_and_delivery(arm_pos, end_pos);
 
+    MsgSpeakOut("enjoy.wav");
+
     // go default
     ros::Duration(1.0).sleep();  // Sleep for 0.5 second
     my_arm->reset_arm_pos(default_pos);
 
 
+}
+
+/**
+ * @brief Regenerate the voice by the given text message
+ * 
+ * @param text 
+ * @param state 0: generate message online, 1: message already exist, broadcast it
+ */
+void arm_manager::MsgSpeakOut(const char* text) {
+
+    printf("\n###########################################################################\n");
+    
+    std::string absolute_address = "/home/rover/collabrative_robot_ws/src/summer_research/voice-based-UI/xfei_asr/audios/";
+    std::string combined = absolute_address + text;
+
+    int n = combined.length();
+
+    // declaring character array
+    char char_array[n + 1];
+
+    // copying the contents of the
+    // string to char array
+    strcpy(char_array, combined.c_str());
+
+    play_wav(char_array);
+    printf("Mplayer Run Success\n");
+    printf("\n###########################################################################\n");
 }

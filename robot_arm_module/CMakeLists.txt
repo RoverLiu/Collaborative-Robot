@@ -59,9 +59,10 @@ src/main.cpp
 src/camera_handler.cpp 
 src/regression.cpp
 src/order_handler.cpp
+src/play_audio.c
 )
 
-target_link_libraries(arm_manager ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(arm_manager ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} ${OpenCV_LIBRARIES} libasound.so)
 ###########
 ## Build ##
 ###########

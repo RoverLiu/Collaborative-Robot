@@ -78,15 +78,15 @@ class arm_manager
         // default position for robot arm to drop chocolate
         geometry_msgs::Pose default_drop_pos;
 
-        float default_drop_pos_x = 0.6;
+        float default_drop_pos_x = 0.50;
         float default_drop_pos_y = 0.00;
         float default_drop_pos_z = 0.25;
 
         // define which arm to pick (chocolate is on which side of the table)
         const float horizontal_threshold = 320.00;
         // calibration distance (compensate the size of gripper)
-        const float X_CALIBRATION_LEFT = -0.150;
-        const float X_CALIBRATION_RIGHT = -0.130;
+        const float X_CALIBRATION_LEFT = -0.160;
+        const float X_CALIBRATION_RIGHT = -0.140;
         const float Y_CALIBRATION_LEFT = -0.055;
         const float Y_CALIBRATION_RIGHT = 0.06;
         // the distance difference between each position
@@ -131,6 +131,8 @@ class arm_manager
 
         // load default calibrations
         void load_default_calibration();
+
+        void MsgSpeakOut(const char* text);
 
 };
 
