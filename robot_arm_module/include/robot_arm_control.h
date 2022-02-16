@@ -47,6 +47,9 @@ class robot_arm_control
         void reset_griper_direction();
         void reset_arm_pos(std::vector<double> joint_group_positions);
 
+        void detach_stand_object();
+        void attach_stand_object();
+
     private:
         // data
         // ROS NodeHandle
@@ -83,6 +86,10 @@ class robot_arm_control
 
         // visualization
         // moveit_visual_tools::MoveItVisualTools visual_tools();
+
+        // collision object
+        moveit_msgs::CollisionObject table;
+        moveit_msgs::CollisionObject stand;
 
 };
 

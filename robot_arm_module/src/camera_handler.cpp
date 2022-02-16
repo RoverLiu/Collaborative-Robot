@@ -115,7 +115,7 @@ std::vector<float> camera_handler::get_pos(int id)
 	object_data.clear();
 
 	// wait until data is ready
-	int maximum_count = 100;
+	int maximum_count = 50;
 	for (int i = 0; i < maximum_count; i++) 
 	{
 		if (!object_data[id].empty()) 
@@ -156,5 +156,6 @@ std::vector<float> camera_handler::get_pos(int id)
 
 	// std::vector<float> dat = object_data[id];
 	// object_data.erase(id);
+	// std::cout<<"returning"<<std::endl;
 	return object_data[id];
 }

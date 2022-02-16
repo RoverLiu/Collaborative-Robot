@@ -5,7 +5,18 @@ The best fitting line is y = 0.00128x+-0.362509
 The best fitting line is y = 0.00113x+0.077090
 The best fitting line is y = 0.00123x+-0.344586
 
+The best fitting line is y = 0.00116x+0.069366
+The best fitting line is y = 0.00126x+-0.360899
+
+The best fitting line is y = 0.00120x+0.051830
+The best fitting line is y = 0.00129x+-0.366111
+
 right_arm
 The best fitting line is y = 0.00124x+0.043563
 The best fitting line is y = 0.00133x+-0.511030
 
+The best fitting line is y = 0.00111x+0.076331
+The best fitting line is y = 0.00131x+-0.513948
+
+The best fitting line is y = 0.00155x+-0.024152
+The best fitting line is y = 0.00117x+-0.460328

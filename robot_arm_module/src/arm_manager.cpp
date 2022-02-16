@@ -30,10 +30,11 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     default_start_left_pos.position.z = default_start_right_pos_z;
     default_start_left_pos.orientation = right_arm->get_direction(1);
 
+    // define drop position
     default_drop_pos.position.x = default_drop_pos_x;
     default_drop_pos.position.y = default_drop_pos_y;
     default_drop_pos.position.z = default_drop_pos_z;
-    default_drop_pos.orientation = right_arm->get_direction(4);
+    default_drop_pos.orientation = right_arm->get_direction(6);
 
     // default_calibration_pos.position.x = 0.30000;
     // default_calibration_pos.position.y = -0.00000;
@@ -50,8 +51,8 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
 
     // // get current pos
     
-    // left_arm->auto_move_arm(default_start_left_pos);
-    // right_arm->auto_move_arm(default_start_right_pos);
+    left_arm->auto_move_arm(default_start_left_pos);
+    right_arm->auto_move_arm(default_start_right_pos);
     // left_arm->get_current_pose();
     // right_arm->get_current_pose();
 
@@ -105,8 +106,8 @@ arm_manager::~arm_manager()
 void arm_manager::load_default_calibration()
 {
     std::cout<<"Load default calibration values. Calibration is recommended for better accuracy"<<std::endl;
-    left_arm_regression_x = new regression(0.00113, 0.077090);
-    left_arm_regression_y = new regression(0.00123, -0.344586);
+    left_arm_regression_x = new regression(0.00120, 0.051830);
+    left_arm_regression_y = new regression(0.00129, -0.366111);
     right_arm_regression_x = new regression(0.00124, 0.043563);
     right_arm_regression_y = new regression(0.00133, -0.511030);
 }
@@ -123,6 +124,11 @@ void arm_manager::wait()
 }
 
 void arm_manager::calibration() {
+    // detach the stand
+    left_arm->detach_stand_object();
+    right_arm->detach_stand_object();
+
+
     // calibrate left arm
     // data to save
     std::vector<float> camera_x;
@@ -240,6 +246,11 @@ void arm_manager::calibration() {
 
     std::cout<<"Calibration done!"<<std::endl;
 //     // wait();
+
+    // add object
+    // detach the stand
+    left_arm->attach_stand_object();
+    right_arm->attach_stand_object();
 }
 
 
@@ -260,8 +271,9 @@ void arm_manager::pick_up_chocolate()
     }
 
     // get pos
-    std::vector<float> camera_pos = my_camera->get_pos(chocolate_id);
-    my_camera->print_data();
+    std::vector<float> camera_pos;
+    camera_pos = my_camera->get_pos(chocolate_id);
+
     if (camera_pos.empty()) 
     {
         ROS_INFO("chocolate not found ");
@@ -314,7 +326,7 @@ void arm_manager::pick_up_chocolate()
     my_arm->pick_up_and_delivery(arm_pos, end_pos);
 
     // go default
-    ros::Duration(10).sleep();  // Sleep for 0.5 second
+    ros::Duration(1.0).sleep();  // Sleep for 0.5 second
     my_arm->reset_arm_pos(default_pos);
 
 
