@@ -1,3 +1,13 @@
+/**
+ * @file play_audio.h
+ * @author Rover
+ * @brief play the save audio file
+ * @version 0.1
+ * @date 2022-02-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef PLAY_AUDIO_H
 #define PLAY_AUDIO_H
 #include <stdio.h>

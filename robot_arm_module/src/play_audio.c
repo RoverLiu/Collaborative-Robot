@@ -1,3 +1,13 @@
+/**
+ * @file play_audio.c
+ * @author Rover
+ * @brief play the save audio file
+ * @version 0.1
+ * @date 2022-02-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../include/play_audio.h"
 #include "alsa/asoundlib.h"
 int set_pcm_play(FILE *fp, WavHeader *wav_header)

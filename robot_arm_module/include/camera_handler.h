@@ -1,3 +1,14 @@
+/**
+ * @file camera_handler.h
+ * @author Rover
+ * @brief handles the data published by the camer module
+ * @version 0.1
+ * @date 2022-02-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #ifndef __CAMERA_HANDLER_H
 #define __CAMERA_HANDLER_H
 
@@ -12,7 +23,6 @@
 #include <string>
 #include <unordered_map>
 
-
 /**
  * @brief this class handles the results published from camera module
  * 
@@ -21,18 +31,12 @@
 class camera_handler
 {
     private:
-        /* data */
         // data
         // ROS NodeHandle
         ros::NodeHandle _nh;
         ros::NodeHandle _nh_priv;
 
         ros::Subscriber object_sub;
-
-        // // flags
-        // // 0 means not updated, 1 means new data received
-        // int left_cal_flag;
-        // int right_cal_flag;
 
         // save the data for object positions
         // the sequence is : middle_x, middle_y, width, height
@@ -41,16 +45,7 @@ class camera_handler
         // call back
         void objectsDetectedCallback(const std_msgs::Float32MultiArray::ConstPtr& msg);
 
-
     public:
-        camera_handler(ros::NodeHandle nh, ros::NodeHandle nh_priv);
-        ~camera_handler();
-
-        void print_data();
-
-        std::vector<float> get_pos(int id);
-
-
         // data
         // specific id for each object
         // value for vertical_chocolate.bin
@@ -68,8 +63,25 @@ class camera_handler
         // const int snickers = 26;
         // const int gripper_left = 44;
         // const int gripper_right = 36;
+        
+        // methods
+        camera_handler(ros::NodeHandle nh, ros::NodeHandle nh_priv);
+        ~camera_handler();
 
+        /**
+         * @brief print out the object position details received
+         * 
+         */
+        void print_data();
 
+        /**
+         * @brief Get the pos of object
+         * 
+         * @param id The chocolate ID 
+         * @return std::vector<float> The position detail of the chocolate
+         * Order: x,y,width,height
+         */
+        std::vector<float> get_pos(int id);
 };
 
 

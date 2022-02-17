@@ -1,3 +1,16 @@
+/**
+ * @file arm_manager.cpp
+ * @author Rover
+ * @brief The manager handles all process for picking up the chocolate
+ * Taking order details come from UI and processing orders by camera and robot arm
+ * The chocolate will be delivered to the specific positions for client. 
+ * @version 0.1
+ * @date 2022-02-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "arm_manager.h"
 #include <iostream>
 #include <string> // for string class
@@ -10,7 +23,12 @@
 #include "camera_handler.h"
 #include "play_audio.h"
 
-
+/**
+ * @brief Construct a new arm manager::arm manager object
+ * 
+ * @param nh Node handler for ros
+ * @param nh_priv Previous node handler for ros
+ */
 arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv) 
 :_nh(nh),_nh_priv(nh_priv)
 {
@@ -38,57 +56,37 @@ arm_manager::arm_manager(ros::NodeHandle nh, ros::NodeHandle nh_priv)
     default_drop_pos.position.z = default_drop_pos_z;
     default_drop_pos.orientation = right_arm->get_direction(6);
 
-    // default_calibration_pos.position.x = 0.30000;
-    // default_calibration_pos.position.y = -0.00000;
-    // default_calibration_pos.position.z = 0.2000;
-    // default_calibration_pos.orientation = left_arm->get_direction(3);
-
-    // left_arm->auto_move_arm(default_drop_pos);
-    // left_arm->get_current_pose();
-    // wait();
-
     // reset
     left_arm->reset_arm_pos(left_arm_default_angle);
     right_arm->reset_arm_pos(right_arm_default_angle);
 
     // // get current pos
+    // left_arm->get_current_pose();
+    // right_arm->get_current_pose();
     
     left_arm->auto_move_arm(default_start_left_pos);
     right_arm->auto_move_arm(default_start_right_pos);
-    // left_arm->get_current_pose();
-    // right_arm->get_current_pose();
 
-    // wait();
-
-
-    // // move to default position 
-    // std::cout<<"right pos"<<std::endl;
-    // right_arm->get_current_pose();
-    // // left_arm->auto_move_arm(default_start_left_pos);
-    // // left_arm->reset_arm_pos();
-    // // left_arm->reset_griper_direction();
-    // // left_arm->gripper_control(0);
-    // std::cout<<"left pos"<<std::endl;
-    // left_arm->get_current_pose();
-
+    // move to default position 
     left_arm->reset_arm_pos(left_arm_finish_angle);
     right_arm->reset_arm_pos(right_arm_finish_angle);
+    left_arm->gripper_control(1);
+    right_arm->gripper_control(1);
 
     // move to default position 
     std::cout<<"right pos default angle"<<std::endl;
     right_arm->get_current_pose();
-    // left_arm->auto_move_arm(default_start_left_pos);
-    // left_arm->reset_arm_pos();
-    // left_arm->reset_griper_direction();
-    // left_arm->gripper_control(0);
+
     std::cout<<"left pos default angle"<<std::endl;
     left_arm->get_current_pose();
  
     std::cout<<"-------------------reset finished--------------------"<<std::endl;
-    
-
 }
 
+/**
+ * @brief Destroy the arm manager::arm manager object
+ * 
+ */
 arm_manager::~arm_manager()
 {
     delete left_arm;
@@ -125,12 +123,20 @@ void arm_manager::wait()
     std::cin >> a;
 }
 
+/**
+ * @brief calibrate the relationship between two frames. 
+ * X axis for camera is y axis for robot arm, Y axis for camera is x axis for robot arm
+ * The calibration results will be saved in the regression lines 
+ *      (left_arm_regression_x;left_arm_regression_y;right_arm_regression_x;right_arm_regression_y;)
+ */
 void arm_manager::calibration() {
     // detach the stand
     left_arm->detach_stand_object();
     right_arm->detach_stand_object();
 
+    // msg out
     MsgSpeakOut("calibration-start.wav");
+
     // calibrate left arm
     // data to save
     std::vector<float> camera_x;
@@ -147,7 +153,7 @@ void arm_manager::calibration() {
     left_arm->gripper_control(0);
     std::vector<float> dat;
 
-
+    // left arm calibration
     std::cout<<"left arm calibration start"<<std::endl;
     float my_gap = calibration_gap;
     for (int i = 0; i < 4; i ++)
@@ -170,7 +176,6 @@ void arm_manager::calibration() {
             camera_x.push_back(dat.at(0));
             camera_y.push_back(dat.at(1));
             std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-            // left_arm->get_current_pose();
 
             // next pos
             current_pos.position.x += my_gap;
@@ -190,6 +195,7 @@ void arm_manager::calibration() {
     left_arm_regression_x->PrintBestFittingLine();
     left_arm_regression_y->PrintBestFittingLine();
 
+    // right arm calibration
     std::cout<<"right arm calibration start"<<std::endl;
     // clear vector and redo everything for right arm
     arm_x.clear();
@@ -226,7 +232,6 @@ void arm_manager::calibration() {
             camera_x.push_back(dat.at(0));
             camera_y.push_back(dat.at(1));
             std::cout<<"x: "<< dat.at(0)<<" y: "<<dat.at(1)<<std::endl;
-            // right_arm->get_current_pose();
 
             // next pos
             current_pos.position.x += my_gap;
@@ -247,31 +252,29 @@ void arm_manager::calibration() {
     right_arm_regression_y->PrintBestFittingLine();
 
     std::cout<<"Calibration done!"<<std::endl;
-//     // wait();
-
-    // add object
-    // detach the stand
-    left_arm->attach_stand_object();
-    right_arm->attach_stand_object();
-
     MsgSpeakOut("calibration-finish.wav");
 
+    // add object
+    // attach the stand
+    left_arm->attach_stand_object();
+    right_arm->attach_stand_object();
 }
 
-
-
-
+/**
+ * @brief pick up chocolate 
+ * (take order for order_handler and control arm to pick up)
+ * 
+ */
 void arm_manager::pick_up_chocolate() 
 {
 
     // get order
     int chocolate_id = my_orders->get_chocolate_to_pick();
-    // my_orders->print_data();
 
+    // no order to collect
     if (chocolate_id == -1)
     {
-        // wait();
-        // ROS_INFO("Wait for new command");
+        // ROS_INFO("No order to collect!");
         return;
     }
 
@@ -279,22 +282,17 @@ void arm_manager::pick_up_chocolate()
     std::vector<float> camera_pos;
     camera_pos = my_camera->get_pos(chocolate_id);
 
+    // object not found
     if (camera_pos.empty()) 
     {
         ROS_INFO("chocolate not found ");
         MsgSpeakOut("choose-another-one.wav");
-
-        // camera_pos = my_camera->get_pos(chocolate_id);
         return;
-        // todo: broadcast a message
     }
 
     std::cout<<"here is the chocolate ID required: "<<chocolate_id<<std::endl;
 
-
-    // wait();
-
-    // get right arm to work
+    // choose an arm to work
     robot_arm_control * my_arm = left_arm;
     geometry_msgs::Pose end_pos = default_drop_pos;
     std::vector<double> default_pos = left_arm_finish_angle;
@@ -314,16 +312,14 @@ void arm_manager::pick_up_chocolate()
         X_CALIBRATION = X_CALIBRATION_RIGHT;
     }
 
-
-
-
-    // convert
+    // convert between two frames
     geometry_msgs::Pose arm_pos;
     arm_pos.orientation = my_arm->get_direction(1);
     arm_pos.position.x = regression_x->predict(camera_pos.at(1)) + X_CALIBRATION;
     arm_pos.position.y = regression_y->predict(camera_pos.at(0)) + Y_CALIBRATION;
     arm_pos.position.z = default_chocolate_z_level;
     
+    // indicate the result
     regression_x->PrintBestFittingLine();
     regression_y->PrintBestFittingLine();
     std::cout<<"x: "<<arm_pos.position.x
@@ -334,18 +330,17 @@ void arm_manager::pick_up_chocolate()
 
     MsgSpeakOut("enjoy.wav");
 
-    // go default
-    ros::Duration(1.0).sleep();  // Sleep for 0.5 second
+    // go default position
+    ros::Duration(1.0).sleep();  
     my_arm->reset_arm_pos(default_pos);
 
 
 }
 
 /**
- * @brief Regenerate the voice by the given text message
+ * @brief Broadcast the msg from recording
  * 
  * @param text 
- * @param state 0: generate message online, 1: message already exist, broadcast it
  */
 void arm_manager::MsgSpeakOut(const char* text) {
 

@@ -1,3 +1,14 @@
+/**
+ * @file regression.cpp
+ * @author Rover
+ * @brief Handle the linear regression with given data or give coefficients
+ * @version 0.1
+ * @date 2022-02-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 // C++ program to implement
 // the above approach
 #include <iostream>
@@ -6,10 +17,14 @@
 // using namespace std;
 #include "regression.h"
 
-
-// Constructor to provide the default
-// values to all the terms in the
-// object of class regression
+/**
+ * @brief Construct a new regression::regression object
+ * Constructor to provide the default
+ * values to all the terms in the
+ * object of class regression
+ * @param x all data for x
+ * @param y all data for y
+ */
 regression::regression(std::vector<float> x, std::vector<float> y) :
 x(x), y(y)
 {
@@ -24,7 +39,12 @@ x(x), y(y)
     calculateBasics();
 }
 
-// another constructor with default values
+/**
+ * @brief Construct a new regression::regression object
+ * another constructor with default values: y = kx+b
+ * @param coeff value k
+ * @param constTerm value b
+ */
 regression::regression(float coeff, float constTerm) :
 coeff(coeff), constTerm(constTerm)
 {}
