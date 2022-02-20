@@ -1,17 +1,18 @@
 # Collaborative-Robot
-This is a yumi based summer project.
+This is a yumi based summer project. The aim of the project is to built a voice-controlled robot arm picking system.
 
 # ####################################
 
 # Environment set up
 ## make a directory
+```
 mkdir -p collabrative_robot_ws/src
 
 cd collabrative_robot_ws
 
 catkin_make
-
-# Package from others
+```
+# Package to install
 Packages below are required to be cloned into workspace.
 ## Camera package
 The camera model is intel D435i. This type of camera has its support for linux - [realsence SDK package](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md) and ROS - [realsence-ros](https://github.com/IntelRealSense/realsense-ros). Also, the [ddynamic_reconfigure](https://github.com/pal-robotics/ddynamic_reconfigure.git) package is required to run the ROS interface.
