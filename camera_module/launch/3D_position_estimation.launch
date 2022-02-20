@@ -38,7 +38,7 @@
     
 
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_camera)/rviz/pointcloud.rviz" required="true" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_camera)/rviz/pointcloud.rviz" required="true" /> -->
   </group>
   
   <node name="find_object_3d" pkg="find_object_2d" type="find_object_2d" output="screen">
